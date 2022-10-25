@@ -1,0 +1,62 @@
+﻿@model IEnumerable<WebBanHang.Areas.Admin.Models.ThongKeTheoKhachHang>
+@{
+    ViewBag.Title = "ThongKeDoanhThuTheoKhachHang";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Thống kê doanh thu theo khách hàng</h2>
+
+
+            <div class="table-responsive">
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th style="color:white">
+                                Tên khách hàng
+                            </th>
+
+                            <th style="color:white">
+                                Số lượng hàng hóa đã mua
+                            </th>
+                            <th style="color:white">
+                                Số tiền đã trả
+                            </th>
+
+                            <th style="color:white">
+                                Doanh thu
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TenKhachHang)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SoLuongHangHoaDaMua)
+                                </td>
+                                <td >
+                                    <div class="money"> @item.SoTienThuVeTuKhachHang VND</div> 
+                                </td>
+                                <td>
+                                    <div class="money">@Html.DisplayFor(modelItem => item.DoanhThuChoKhachHang) VND </div>
+                                </td>                              
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

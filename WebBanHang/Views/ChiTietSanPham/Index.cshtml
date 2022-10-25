@@ -1,0 +1,91 @@
+﻿@model WebBanHang.Models.MatHang
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<!-- Product Details Section Begin -->
+<section class="product-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="product__details__pic">
+                    <div class="product__details__pic__left product__thumb nice-scroll">
+                        <a class="pt active" href="#product-1">                           
+
+                            @{
+                                var base641 = Convert.ToBase64String(Model.HinhAnh1);
+                                var imgSrc1 = String.Format("data:image/gif;base64,{0}", base641);
+                            }
+                            <img src='@imgSrc1'  />
+                        </a>
+                        <a class="pt" href="#product-2">
+                            @{
+                                var base642 = Convert.ToBase64String(Model.HinhAnh2);
+                                var imgSrc2 = String.Format("data:image/gif;base64,{0}", base642);
+                            }
+                            <img src='@imgSrc2' />
+                            
+                        </a>
+                        <a class="pt" href="#product-3">                           
+                            @{
+                                var base643 = Convert.ToBase64String(Model.HinhAnh3);
+                                var imgSrc3 = String.Format("data:image/gif;base64,{0}", base643);
+                            }
+                            <img src='@imgSrc3' />
+                        </a>
+                        <a class="pt" href="#product-4">
+                            @{
+                                var base644 = Convert.ToBase64String(Model.HinhAnh4);
+                                var imgSrc4 = String.Format("data:image/gif;base64,{0}", base644);
+                            }
+                            <img src='@imgSrc4' />
+                            @*<img src="@Url.Content(Model.HinhAnh4)" />*@
+                        </a>
+                    </div>
+                    <div class="product__details__slider__content">
+                        <div class="product__details__pic__slider owl-carousel">
+                            <img data-hash="product-1" class="product__big__img" src="@imgSrc1" alt="">
+                            <img data-hash="product-2" class="product__big__img" src="@imgSrc2" alt="">
+                            <img data-hash="product-3" class="product__big__img" src="@imgSrc3" alt="">
+                            <img data-hash="product-4" class="product__big__img" src="@imgSrc4" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="product__details__text">
+                    <h3>@Model.TenMH </h3>
+                  
+                    <div class="product__details__price money" style="font-size:22px">@Model.DonGia VND </div>
+                    <p>
+                        @Model.MoTa
+                    </p>
+                    <div class="product__details__button">
+                       
+                        <a href="~/GioHang/Addto/@Model.IDMH" class="cart-btn"><span class="icon_bag_alt"></span> Thêm vào giỏ hàng</a>
+             
+                    </div>                    
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="product__details__tab">
+                    <div style="background-color:black;height:2px; margin-bottom:30px"><p>.</p></div>
+                    <h3 style="text-align: center; font-style: unset; margin-bottom: 30px">Mô tả sản phẩm</h3>
+                   
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                            
+                            <p>
+                                @Model.MoTaChiTiet
+                            </p>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Details Section End -->

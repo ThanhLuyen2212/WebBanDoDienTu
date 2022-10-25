@@ -1,0 +1,62 @@
+﻿@using WebBanHang.Models;
+@{    
+    ViewBag.Title = "CacMatHangDaMua";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<ChiTietHoaDon> chitietdonhang = ViewBag.chitietdonhang;
+
+}
+
+
+<!-- Shop Cart Section Begin -->
+<section class="shop-cart spad">
+    <div class="container" >
+        <h2 style="margin-bottom:50px;text-align:center" >Các mặt hàng đã đặt</h2>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shop__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="text-align:left">Tên mặt hàng</th>
+                                <th>Loại mặt hàng</th>
+                                <th>Đơn giá</th>
+                                <th>Trạng thái</th>
+                                <th>Số lượng</th>
+                                <th>Ngày mua</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in chitietdonhang)
+                            {
+                                <tr>
+                                    <td class="cart__product__item__title" style="text-align:left">@Html.DisplayFor(Model => item.MatHang.TenMH)  </td>
+                                    <td class="cart__product__item__title">@Html.DisplayFor(Model => item.MatHang.LoaiMatHang.TenLoaiMH)  </td>
+
+                                    <td class="cart__price money">@Html.DisplayFor(Model => item.MatHang.DonGia)  </td>
+                                    <td class="cart__product__item__title">@Html.DisplayFor(Model => item.HoaDon.TrangThai.TenTrangThai)  </td>
+                                    <td class="cart__product__item__title">@Html.DisplayFor(Model => item.SoluongMH)  </td>
+                                    <td class="cart__product__item__title">@Html.DisplayFor(Model => item.HoaDon.NgayMua)  </td>        
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shop Cart Section End -->
+
+
+<style>
+    td {
+        text-align: center;
+        margin:5px;
+
+    }
+
+    th {
+        margin: 5px;
+        text-align: center;
+    }
+</style>
