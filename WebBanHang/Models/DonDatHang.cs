@@ -20,7 +20,7 @@ namespace WebBanHang.Models
             this.ChiTietDonDatHangs = new HashSet<ChiTietDonDatHang>();
         }
     
-        public int IDHD { get; set; }
+        public int IDDDH { get; set; }
         public Nullable<System.DateTime> NgayMua { get; set; }
         public string DiaChiNhanHang { get; set; }
         public Nullable<int> TongSoluong { get; set; }

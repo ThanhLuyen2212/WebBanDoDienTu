@@ -39,7 +39,6 @@ namespace WebBanHang.Models
         public virtual ICollection<ChiTietDonDatHang> ChiTietDonDatHangs { get; set; }
         public virtual LoaiMatHang LoaiMatHang { get; set; }
 
-
         [NotMapped]
         public HttpPostedFileBase UploadImage1 { get; set; }
 
@@ -51,6 +50,5 @@ namespace WebBanHang.Models
 
         [NotMapped]
         public HttpPostedFileBase UploadImage4 { get; set; }
-
     }
 }

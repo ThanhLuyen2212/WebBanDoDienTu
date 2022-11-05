@@ -14,8 +14,8 @@ namespace WebBanHang.Areas.Admin.Controllers
     {
         private WebBanDoDienTuEntities db = new WebBanDoDienTuEntities();
 
-        // GET: Admin/AdminChiTietDonDatHangs
-        public ActionResult Index(string IDHD)
+        // GET: Admin/AdminChiTietDonDatHangs 
+        public ActionResult Index(string IDDDH)
         {
             if (Session["Admin"] == null)
             {
@@ -23,22 +23,22 @@ namespace WebBanHang.Areas.Admin.Controllers
             }
             else
             {
-                if (IDHD == null)
+                if (IDDDH == null)
                 {
                     return View(db.ChiTietDonDatHangs.Include(c => c.DonDatHang).Include(c => c.MatHang).ToList());
                 }
-                else if (IDHD.Equals(""))
+                else if (IDDDH.Equals(""))
                 {
                     return View(db.ChiTietDonDatHangs.Include(c => c.DonDatHang).Include(c => c.MatHang).ToList());
                 }
                 else
                 {
-                    int id = int.Parse(IDHD);
-                    return View(db.ChiTietDonDatHangs.Include(c => c.DonDatHang).Include(c => c.MatHang).Where(c => c.IDHD == id).ToList());
+                    int id = int.Parse(IDDDH);
+                    return View(db.ChiTietDonDatHangs.Include(c => c.DonDatHang).Include(c => c.MatHang).Where(c => c.IDDDH == id).ToList());
                 }
             }
-           
         }
+
 
         // GET: Admin/AdminChiTietDonDatHangs/Details/5
         public ActionResult Details(int? id)
@@ -58,7 +58,7 @@ namespace WebBanHang.Areas.Admin.Controllers
         // GET: Admin/AdminChiTietDonDatHangs/Create
         public ActionResult Create()
         {
-            ViewBag.IDHD = new SelectList(db.DonDatHangs, "IDHD", "IDHD");
+            ViewBag.IDDDH = new SelectList(db.DonDatHangs, "IDDDH", "DiaChiNhanHang");
             ViewBag.IDMH = new SelectList(db.MatHangs, "IDMH", "TenMH");
             return View();
         }
@@ -68,7 +68,7 @@ namespace WebBanHang.Areas.Admin.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IDChiTietHD,IDHD,IDMH,SoluongMH")] ChiTietDonDatHang chiTietDonDatHang)
+        public ActionResult Create(ChiTietDonDatHang chiTietDonDatHang)
         {
             if (ModelState.IsValid)
             {
@@ -77,7 +77,7 @@ namespace WebBanHang.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.IDHD = new SelectList(db.DonDatHangs, "IDHD", "IDHD", chiTietDonDatHang.IDHD);
+            ViewBag.IDDDH = new SelectList(db.DonDatHangs, "IDDDH", "DiaChiNhanHang", chiTietDonDatHang.IDDDH);
             ViewBag.IDMH = new SelectList(db.MatHangs, "IDMH", "TenMH", chiTietDonDatHang.IDMH);
             return View(chiTietDonDatHang);
         }
@@ -94,7 +94,7 @@ namespace WebBanHang.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.IDHD = new SelectList(db.DonDatHangs, "IDHD", "IDHD", chiTietDonDatHang.IDHD);
+            ViewBag.IDDDH = new SelectList(db.DonDatHangs, "IDDDH", "DiaChiNhanHang", chiTietDonDatHang.IDDDH);
             ViewBag.IDMH = new SelectList(db.MatHangs, "IDMH", "TenMH", chiTietDonDatHang.IDMH);
             return View(chiTietDonDatHang);
         }
@@ -104,7 +104,7 @@ namespace WebBanHang.Areas.Admin.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IDChiTietHD,IDHD,IDMH,SoluongMH")] ChiTietDonDatHang chiTietDonDatHang)
+        public ActionResult Edit([Bind(Include = "IDChiTietHD,IDDDH,IDMH,DanhGiaSanPham,BinhLuan,SoluongMH")] ChiTietDonDatHang chiTietDonDatHang)
         {
             if (ModelState.IsValid)
             {
@@ -112,7 +112,7 @@ namespace WebBanHang.Areas.Admin.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.IDHD = new SelectList(db.DonDatHangs, "IDHD", "IDHD", chiTietDonDatHang.IDHD);
+            ViewBag.IDDDH = new SelectList(db.DonDatHangs, "IDDDH", "DiaChiNhanHang", chiTietDonDatHang.IDDDH);
             ViewBag.IDMH = new SelectList(db.MatHangs, "IDMH", "TenMH", chiTietDonDatHang.IDMH);
             return View(chiTietDonDatHang);
         }

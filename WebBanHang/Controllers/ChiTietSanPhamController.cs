@@ -14,6 +14,7 @@ namespace WebBanHang.Controllers
         public ActionResult Index(int id)
         {
             return View(data.MatHangs.FirstOrDefault(c => c.IDMH == id));
+
         }
     }
 }

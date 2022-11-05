@@ -36,7 +36,7 @@ namespace WebBanHang.Areas.Admin.Controllers
                 {
                     return View(db.KhachHangs.Where(s => s.TenKH .ToLower().Contains(tenKH.ToLower())).ToList());
                 }
-            }            
+            }
         }
 
         // GET: Admin/AdminKhachHangs/Details/5
@@ -65,7 +65,7 @@ namespace WebBanHang.Areas.Admin.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "IDKH,TenKH,SDT,DiaChi,NgaySinh,UserName,Password,Email")] KhachHang khachHang)
+        public ActionResult Create(KhachHang khachHang)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +97,7 @@ namespace WebBanHang.Areas.Admin.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "IDKH,TenKH,SDT,DiaChi,NgaySinh,UserName,Password,Email")] KhachHang khachHang)
+        public ActionResult Edit(KhachHang khachHang)
         {
             if (ModelState.IsValid)
             {
@@ -111,6 +111,7 @@ namespace WebBanHang.Areas.Admin.Controllers
         // GET: Admin/AdminKhachHangs/Delete/5
         public ActionResult Delete(int? id)
         {
+            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -128,10 +129,12 @@ namespace WebBanHang.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            KhachHang khachHang = db.KhachHangs.Find(id);
-            db.KhachHangs.Remove(khachHang);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            
+                KhachHang khachHang = db.KhachHangs.Find(id);
+                db.KhachHangs.Remove(khachHang);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+           
         }
 
         protected override void Dispose(bool disposing)

@@ -45,7 +45,7 @@ namespace WebBanHang.Areas.Admin.Controllers
         }
 
         // Thống kê doang thu theo sản phẩm
-        public ActionResult ThongKeDoanhThuTheoSanPham()
+        public ActionResult ThongKeDoanhThuTheoSanPham(DateTime? NgayBatDau, DateTime? NgayKetThuc)
         {
             if (Session["Admin"] == null)
             {
@@ -53,21 +53,28 @@ namespace WebBanHang.Areas.Admin.Controllers
             }
 
 
-            List<MatHang> matHangs = data.MatHangs.ToList();
-            List<ThongKeTheoSanPham> listThongKe = new List<ThongKeTheoSanPham>();
-            foreach (var item in matHangs)
-            {
-                if (data.ChiTietDonDatHangs.FirstOrDefault(c => c.IDMH == item.IDMH) == null) continue;
-                ThongKeTheoSanPham sp = new ThongKeTheoSanPham();
-                sp.TenSanPham = item.TenMH;
-                int tmp = int.Parse(data.ChiTietDonDatHangs.Where(c => c.IDMH == item.IDMH).Sum(c => c.SoluongMH).ToString());
-                sp.SoLuongHangHoaBanDuoc = int.Parse(data.ChiTietDonDatHangs.Where(c => c.IDMH == item.IDMH).Sum(c => c.SoluongMH).ToString());                               
-                sp.SoTienHangHoaThuVe = (int)(item.DonGia * tmp);
-                sp.DoanhThuChoHangHoa = sp.SoTienHangHoaThuVe;
-                listThongKe.Add(sp);
-            }
+            /* List<MatHang> matHangs = data.ThongKeTheoDoanhThuTheoSanPham(NgayBatDau, NgayKetThuc).ToList();
+             List<ThongKeTheoSanPham> listThongKe = new List<ThongKeTheoSanPham>();
+             foreach (var item in matHangs)
+             {
+                 if (matHangs == null) continue;
+                 ThongKeTheoSanPham sp = new ThongKeTheoSanPham();
 
-            return View(listThongKe);
+                 List<MatHang> mh = data.MatHangs.Where(s => s.IDMH == item.IDMH).ToList();
+
+                 int tmp = int.Parse(data.ChiTietDonDatHangs.Where(c => c.IDMH == item.IDMH ).Sum(c => c.SoluongMH).ToString());
+
+                 sp.SoLuongHangHoaBanDuoc = int.Parse(data.ChiTietDonDatHangs.Where(c => c.IDMH == item.IDMH).Sum(c => c.SoluongMH).ToString());      
+
+                 sp.SoTienHangHoaThuVe = (int)(mh[0].DonGia * tmp);
+
+                 sp.DoanhThuChoHangHoa = sp.SoTienHangHoaThuVe;
+
+                 listThongKe.Add(sp);
+             }
+
+             return View(listThongKe);*/
+            return View();
         }
     }
 }

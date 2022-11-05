@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "TatCaCacDonHang";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    List<HoaDon> listhoadon = ViewBag.tatcacacdonhang;
+    List<DonDatHang> listhoadon = ViewBag.tatcacacdonhang;
 }
 
 <!-- Shop Cart Section Begin -->
@@ -29,8 +29,8 @@
                                     <tbody>
                                         <tr>
 
-                                            <input type="hidden" value="@item.IDHD" name="ID HoaDon" />
-                                            <td class="cart__product__item__title">@Html.DisplayFor(Model => item.IDHD)  </td>
+                                            <input type="hidden" value="@item.IDDDH" name="ID DonDatHang" />
+                                            <td class="cart__product__item__title">@Html.DisplayFor(Model => item.IDDDH)  </td>
                                             <td class="cart__product__item__title">@Html.DisplayFor(Model => item.NgayMua)  </td>
                                             <td class="cart__product__item__title">@Html.DisplayFor(Model => item.TrangThai.TenTrangThai)</td>
                                             <td class="cart__product__item__title">@Html.DisplayFor(Model => item.TongSoluong)  </td>
@@ -53,7 +53,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach (var items in item.ChiTietHoaDons)
+                                    @foreach (var items in item.ChiTietDonDatHangs)
                                     {
                                         <tr>
                                             <td class="cart__product__item__title" style="text-align:left">@Html.DisplayFor(Model => items.MatHang.TenMH)</td>

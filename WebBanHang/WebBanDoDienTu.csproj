@@ -140,8 +140,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
-    <Compile Include="Areas\Admin\Controllers\AdminChiTietHoaDonsController.cs" />
-    <Compile Include="Areas\Admin\Controllers\AdminHoaDonsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminChiTietDonDatHangsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\AdminDonDatHangsController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminHomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminKhachHangsController.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminLoaiMatHangsController.cs" />
@@ -155,12 +155,14 @@
     <Compile Include="Areas\Admin\Models\ThongKeTheoSanPham.cs" />
     <Compile Include="Controllers\ChiTietSanPhamController.cs" />
     <Compile Include="Controllers\GioHangController.cs" />
+    <Compile Include="Controllers\GioHangKhachLeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ShopController.cs" />
     <Compile Include="Controllers\ThongBaoController.cs" />
     <Compile Include="Controllers\ThongTinCaNhanController.cs" />
     <Compile Include="Controllers\XacNhanDonHangController.cs" />
+    <Compile Include="Controllers\XacNhanDonHangKhachLeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -189,8 +191,8 @@
       <DependentUpon>Model1.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Model1.cs">
-      <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Model1.Designer.cs">
@@ -199,9 +201,6 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\PhuongThucThanhToan.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TrangThai.cs">
@@ -991,6 +990,7 @@
     <Content Include="Assets\img\banner\banner-2.jpg" />
     <Content Include="Assets\img\banner\banner-2.png" />
     <Content Include="Assets\img\banner\banner-3.jpg" />
+    <Content Include="Assets\img\banner\banner_chinh1.png" />
     <Content Include="Assets\img\blog\blog-1.jpg" />
     <Content Include="Assets\img\blog\blog-10.jpg" />
     <Content Include="Assets\img\blog\blog-2.jpg" />
@@ -1088,23 +1088,14 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\123.png" />
-    <Content Include="Images\admin.jpg" />
+    <Content Include="Images\banner-2.png" />
     <Content Include="Images\bookshelf.png" />
-    <Content Include="Images\category-1.jpg" />
-    <Content Include="Images\category-2.jpg" />
-    <Content Include="Images\category-3.jpg" />
-    <Content Include="Images\category-4.jpg" />
-    <Content Include="Images\category-5.jpg" />
     <Content Include="Images\desktop-computer.png" />
     <Content Include="Images\gio.png" />
-    <Content Include="Images\hieu_sach_nho_o_paris-01.jpg" />
-    <Content Include="Images\image_195509_1_15686.jpg" />
-    <Content Include="Images\kotucgian.jpg" />
     <Content Include="Images\lgio.png" />
     <Content Include="Images\login.png" />
     <Content Include="Images\nen.jpg" />
     <Content Include="Images\panner.jpg" />
-    <Content Include="Images\rừng na uy.png" />
     <Content Include="Images\sach.jpg" />
     <Content Include="Images\sach1.png" />
     <Content Include="Images\sach2.jpg" />
@@ -1257,48 +1248,11 @@
     <Content Include="Areas\Admin\Views\Shared\_AdminHeader.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminNavLeft.cshtml" />
     <Content Include="Areas\Admin\Views\AdminHome\Index.cshtml" />
-    <Content Include="Assets\fonts\ElegantIcons.eot" />
-    <Content Include="Assets\fonts\ElegantIcons.ttf" />
-    <Content Include="Assets\fonts\ElegantIcons.woff" />
-    <Content Include="Assets\fonts\fontawesome-webfont.eot" />
-    <Content Include="Assets\fonts\fontawesome-webfont.ttf" />
-    <Content Include="Assets\fonts\fontawesome-webfont.woff" />
-    <Content Include="Assets\fonts\fontawesome-webfont.woff2" />
-    <Content Include="Assets\fonts\FontAwesome.otf" />
-    <Content Include="Assets\sass\style.scss" />
-    <Content Include="Assets\sass\_base.scss" />
-    <Content Include="Assets\sass\_blog-details.scss" />
-    <Content Include="Assets\sass\_blog-sidebar.scss" />
-    <Content Include="Assets\sass\_blog.scss" />
-    <Content Include="Assets\sass\_breadcrumb.scss" />
-    <Content Include="Assets\sass\_categories.scss" />
-    <Content Include="Assets\sass\_checkout.scss" />
-    <Content Include="Assets\sass\_contact.scss" />
-    <Content Include="Assets\sass\_footer.scss" />
-    <Content Include="Assets\sass\_header.scss" />
-    <Content Include="Assets\sass\_home-page.scss" />
-    <Content Include="Assets\sass\_mixins.scss" />
-    <Content Include="Assets\sass\_product-details.scss" />
-    <Content Include="Assets\sass\_product.scss" />
-    <Content Include="Assets\sass\_responsive.scss" />
-    <Content Include="Assets\sass\_shop-cart.scss" />
-    <Content Include="Assets\sass\_shop.scss" />
-    <Content Include="Assets\sass\_variable.scss" />
     <Content Include="Areas\Admin\Views\AdminsManager\Create.cshtml" />
     <Content Include="Areas\Admin\Views\AdminsManager\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\AdminsManager\Details.cshtml" />
     <Content Include="Areas\Admin\Views\AdminsManager\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\AdminsManager\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminChiTietHoaDons\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminChiTietHoaDons\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminChiTietHoaDons\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminChiTietHoaDons\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminChiTietHoaDons\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminHoaDons\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminHoaDons\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminHoaDons\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminHoaDons\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\AdminHoaDons\Index.cshtml" />
     <Content Include="Areas\Admin\Views\AdminLoaiMatHangs\Create.cshtml" />
     <Content Include="Areas\Admin\Views\AdminLoaiMatHangs\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\AdminLoaiMatHangs\Details.cshtml" />
@@ -1328,6 +1282,48 @@
     <Content Include="Areas\Admin\Views\AdminThongKe\Index.cshtml" />
     <Content Include="Areas\Admin\Views\AdminThongKe\ThongKeDoanhThuTheoKhachHang.cshtml" />
     <Content Include="Areas\Admin\Views\AdminThongKe\ThongKeDoanhThuTheoSanPham.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminDonDatHangs\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminDonDatHangs\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminDonDatHangs\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminDonDatHangs\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminDonDatHangs\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminChiTietDonDatHangs\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminChiTietDonDatHangs\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminChiTietDonDatHangs\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminChiTietDonDatHangs\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminChiTietDonDatHangs\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminDonDatHangs\DuyetDonDatHang.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminDonDatHangs\GiaoHangKhongThanhCong.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminDonDatHangs\GiaoHangThanhCong.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminDonDatHangs\TatCaDonHangDaHuy.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminDonDatHangs\DonHangCanXoa.cshtml" />
+    <Content Include="Assets\fonts\ElegantIcons.eot" />
+    <Content Include="Assets\fonts\ElegantIcons.ttf" />
+    <Content Include="Assets\fonts\ElegantIcons.woff" />
+    <Content Include="Assets\fonts\fontawesome-webfont.eot" />
+    <Content Include="Assets\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Assets\fonts\fontawesome-webfont.woff" />
+    <Content Include="Assets\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Assets\fonts\FontAwesome.otf" />
+    <Content Include="Assets\sass\style.scss" />
+    <Content Include="Assets\sass\_base.scss" />
+    <Content Include="Assets\sass\_blog-details.scss" />
+    <Content Include="Assets\sass\_blog-sidebar.scss" />
+    <Content Include="Assets\sass\_blog.scss" />
+    <Content Include="Assets\sass\_breadcrumb.scss" />
+    <Content Include="Assets\sass\_categories.scss" />
+    <Content Include="Assets\sass\_checkout.scss" />
+    <Content Include="Assets\sass\_contact.scss" />
+    <Content Include="Assets\sass\_footer.scss" />
+    <Content Include="Assets\sass\_header.scss" />
+    <Content Include="Assets\sass\_home-page.scss" />
+    <Content Include="Assets\sass\_mixins.scss" />
+    <Content Include="Assets\sass\_product-details.scss" />
+    <Content Include="Assets\sass\_product.scss" />
+    <Content Include="Assets\sass\_responsive.scss" />
+    <Content Include="Assets\sass\_shop-cart.scss" />
+    <Content Include="Assets\sass\_shop.scss" />
+    <Content Include="Assets\sass\_variable.scss" />
     <EntityDeploy Include="Models\Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
@@ -1372,6 +1368,10 @@
     <Content Include="Views\ThongBao\CacDonHangDangCho.cshtml" />
     <Content Include="Views\ThongBao\TatCaCacDonHang.cshtml" />
     <Content Include="Views\ThongTinCaNhan\Index.cshtml" />
+    <Content Include="Views\XacNhanDonHangKhachLe\XacNhan.cshtml" />
+    <Content Include="Views\GioHangKhachLe\Show.cshtml" />
+    <Content Include="Views\ThongBao\TimKiemDonDatHang.cshtml" />
+    <Content Include="Views\ThongTinCaNhan\CapNhatThongTinCaNhan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

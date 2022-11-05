@@ -64,9 +64,16 @@
                         @Model.MoTa
                     </p>
                     <div class="product__details__button">
-                       
-                        <a href="~/GioHang/Addto/@Model.IDMH" class="cart-btn"><span class="icon_bag_alt"></span> Thêm vào giỏ hàng</a>
-             
+                        @if (Session["KhachHang"] != null)
+                        {
+                            <a href="~/GioHang/Addto/@Model.IDMH" class="cart-btn"><span class="icon_bag_alt"></span> Thêm vào giỏ hàng</a>
+                        }
+                        else
+                        {
+                            <a href="~/GioHangKhachLe/Addto/@Model.IDMH" class="cart-btn"><span class="icon_bag_alt"></span> Thêm vào giỏ hàng</a>
+                        }
+
+
                     </div>                    
                 </div>
             </div>

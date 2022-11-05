@@ -37,10 +37,17 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Địa chỉ</label>
+                        <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Địa chỉ giao hàng 1</label>
                         <div class="col-sm-9">
-                            @Html.EditorFor(model => model.DiaChi, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.DiaChi, "", new { @class = "text-danger" })
+                            @Html.EditorFor(model => model.DiaChiGiaoHang1, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DiaChiGiaoHang1, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Địa chỉ giao hàng 2</label>
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.DiaChiGiaoHang2, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DiaChiGiaoHang2, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-group row">
@@ -71,6 +78,28 @@
                             @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Điểm tích lũy</label>
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.DiemTichLuy, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DiemTichLuy, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Điểm tích lũy còn lại</label>
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.DiemTichLuyConLai, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DiemTichLuyConLai, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Loại khách hàng</label>
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.LoaiKhachHang, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.LoaiKhachHang, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
                     <button style="width:100px; type="submit" value="Save" class="btn btn-primary mr-2">Save</button>
 
                     <a href="~/Admin/AdminMatHangs/Index">

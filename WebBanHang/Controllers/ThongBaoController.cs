@@ -19,7 +19,6 @@ namespace WebBanHang.Controllers
 
         public ActionResult MuaThanhCong()
         {
-
             return View();
         }
        
@@ -28,21 +27,33 @@ namespace WebBanHang.Controllers
             if (Session["KhachHang"] != null)
             {
                 KhachHang khachhang = (KhachHang)Session["KhachHang"];
-                List<DonDatHang> listhoadon = data.DonDatHangs.Where(c => c.IDKH == khachhang.IDKH).ToList();
-                List<ChiTietDonDatHang> listchitiethoadon = new List<ChiTietDonDatHang>();
-                foreach (DonDatHang item in listhoadon)
+                List<DonDatHang> listdondathang = data.DonDatHangs.Where(c => c.IDKH == khachhang.IDKH).ToList();
+                List<ChiTietDonDatHang> listchitietdondathang = new List<ChiTietDonDatHang>();
+                foreach (DonDatHang item in listdondathang)
                 {
-                    List<ChiTietDonDatHang> temp = data.ChiTietDonDatHangs.Where(c => c.IDHD == item.IDHD).ToList();
-                    listchitiethoadon = listchitiethoadon.Concat(temp).ToList();
+                    List<ChiTietDonDatHang> temp = data.ChiTietDonDatHangs.Where(c => c.IDDDH == item.IDDDH).ToList();
+                    listchitietdondathang = listchitietdondathang.Concat(temp).ToList();
                 }
-                listchitiethoadon = listchitiethoadon.Distinct().ToList();
-                ViewBag.chitietdonhang = listchitiethoadon;
+                listchitietdondathang = listchitietdondathang.Distinct().ToList();
+                ViewBag.chitietdonhang = listchitietdondathang;
             }
             else
             {
                 return RedirectToAction("Index", "Login");
             }
             return View();
+        }
+
+        public ActionResult DanhGia(FormCollection form)
+        {            
+            string danhgia = form["rate"];
+            string IDChiTietDonDatHang = form["IDChiTietDonDatHang"];
+            string BinhLuan = form["BinhLuan"];
+            if (BinhLuan == null) 
+                BinhLuan = null; 
+            else BinhLuan = BinhLuan;
+            data.sp_DanhGiaMatHangDaMua(int.Parse(IDChiTietDonDatHang),int.Parse(danhgia),BinhLuan);
+            return RedirectToAction("CacMatHangDaMua", "ThongBao");            
         }
 
 
@@ -52,8 +63,8 @@ namespace WebBanHang.Controllers
             if (Session["KhachHang"] != null)
             {
                 KhachHang khachhang = (KhachHang)Session["KhachHang"];
-                List<DonDatHang> listhoadon = data.DonDatHangs.Where(c => c.IDKH == khachhang.IDKH && c.IDTrangThai == 1).ToList();               
-                ViewBag.cachoadondangcho = listhoadon;
+                List<DonDatHang> listdondathang = data.DonDatHangs.Where(c => c.IDKH == khachhang.IDKH && c.IDTrangThai == 1).ToList();               
+                ViewBag.cacdondathangdangcho = listdondathang;
             }
             else
             {
@@ -71,13 +82,14 @@ namespace WebBanHang.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                DonDatHang hoaDon = data.DonDatHangs.FirstOrDefault(c => c.IDHD == id);
-                if (hoaDon == null)
+                DonDatHang donDatHang = data.DonDatHangs.FirstOrDefault(c => c.IDDDH == id);
+                if (donDatHang == null)
                 {
                     return HttpNotFound();
                 }
-                data.DonDatHangs.Remove(hoaDon);
-                data.SaveChanges();
+
+                data.sp_XoaDonDatHangChuaDuyet(id);
+                
                 return RedirectToAction("CacDonHangDangCho", "ThongBao");
             }
             else
@@ -93,14 +105,34 @@ namespace WebBanHang.Controllers
             if (Session["KhachHang"] != null)
             {
                 KhachHang khachhang = (KhachHang)Session["KhachHang"];
-                List<DonDatHang> listhoadon = data.DonDatHangs.Where(c => c.IDKH == khachhang.IDKH).ToList();
-                ViewBag.tatcacacdonhang = listhoadon;
+                List<DonDatHang> listdondathang = data.DonDatHangs.Where(c => c.IDKH == khachhang.IDKH).ToList();
+                ViewBag.tatcacacdonhang = listdondathang;
             }
             else
             {
                 return RedirectToAction("Index", "Login");
             }
             return View();
+        }
+
+        public ActionResult TimKiemDonDatHang(string SoDienThoai)
+        {
+            if (SoDienThoai == null)
+                return View();
+            List<DonDatHang> listdondathang = data.DonDatHangs.Where(c => c.DienThoaiKhongAccount == SoDienThoai).ToList();
+            return View(listdondathang);
+        }
+
+        public ActionResult DanhGiaKhachLe(FormCollection form)
+        {
+            string danhgia = form["rate"];
+            string IDChiTietDonDatHang = form["IDChiTietDonDatHang"];
+            string BinhLuan = form["BinhLuan"];
+            if (BinhLuan == null)
+                BinhLuan = null;
+            else BinhLuan = BinhLuan;
+            data.sp_DanhGiaMatHangDaMua(int.Parse(IDChiTietDonDatHang), int.Parse(danhgia), BinhLuan);
+            return RedirectToAction("TimKiemDonDatHang", "ThongBao");
         }
     }
 }

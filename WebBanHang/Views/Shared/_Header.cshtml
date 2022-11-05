@@ -1,6 +1,8 @@
 ﻿@using WebBanHang.Models;
 @{ 
     KhachHang khachhang = Session["KhachHang"] as KhachHang;
+
+
 }
 <header class="header">
     <div class="container-fluid">
@@ -13,25 +15,29 @@
                     </a>
                 </div>
             </div>
-            <div class="col-xl-8 col-lg-6" >
-                <nav class="header__menu" style="margin-left:200px">
-                    <ul>
+            <div class="col-xl-7 col-lg-6" style="text-align:center">
+                <nav class="header__menu" style="margin-left:100px">
+                    <ul style="text-align:center">
                         <li><a href="~/Home/index">Trang chủ</a></li>
                         <li><a href="~/Shop/Index">Các sản phẩm</a></li>
-                        <li><a href="~/GioHang/show">Giỏ hàng</a></li>                       
+                        <li><a href="~/GioHang/show">Giỏ hàng</a></li>
                         <li>
                             <a href="#">Các đơn hàng</a>
-                            <ul class="dropdown" style="width:max-content">                               
+                            <ul class="dropdown" style="width:max-content">
                                 <li><a href="~/ThongBao/CacDonHangDangCho">Đơn hàng đang chờ</a></li>
                                 <li><a href="~/ThongBao/TatCaCacDonHang">Tất cả các đơn hàng</a></li>
-                                <li><a href="~/ThongBao/CacMatHangDaMua">Các mặt hàng đã đặt</a></li>
+                                <li><a href="~/ThongBao/CacMatHangDaMua">Các mặt hàng đã mua</a></li>
                             </ul>
                         </li>
+                        @if (Session["KhachHang"] == null)
+                        {
+                            <li><a href="~/ThongBao/TimKiemDonDatHang">Tìm kiếm đơn hàng</a></li>
+                        }
 
                     </ul>
                 </nav>
             </div>
-            <div class="col-lg-2">
+            <div class="col-lg-3">
                 <div class="header__right" style="margin-right:50px">
 
                     @if (Session["SoLuongHangTrongGioHang"] != null)

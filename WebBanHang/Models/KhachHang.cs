@@ -30,7 +30,7 @@ namespace WebBanHang.Models
         public string UserName { get; set; }
         public string Password { get; set; }
         public Nullable<int> DiemTichLuy { get; set; }
-        public Nullable<int> DiemTichLuyDaDung { get; set; }
+        public Nullable<int> DiemTichLuyConLai { get; set; }
         public string LoaiKhachHang { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

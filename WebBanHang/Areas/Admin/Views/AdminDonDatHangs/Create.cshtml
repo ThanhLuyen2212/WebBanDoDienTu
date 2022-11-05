@@ -1,0 +1,109 @@
+﻿@model WebBanHang.Models.DonDatHang
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+    <div class="col-md-6 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Tạo một đơn đặt hàng mới</h4>
+
+                <form class="forms-sample">
+                    <div class="form-group row">
+                        <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Tên khách hàng có tài khoản</label>
+                        <div class="col-sm-9">
+                            @Html.DropDownList("IDKH", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.IDKH, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Ngày mua</label>
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.NgayMua, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.NgayMua, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Địa chỉ nhận hàng</label>
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.DiaChiNhanHang, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DiaChiNhanHang, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Trạng thái thanh toán</label>
+                        <div class="col-md-9">
+                            <div class="checkbox">
+                                @Html.EditorFor(model => model.TrangThaiThanhToan)
+                                @Html.ValidationMessageFor(model => model.TrangThaiThanhToan, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Ngày thanh toán</label>
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.NgayThanhToan, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.NgayThanhToan, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Phương thức thanh toán</label>
+                        <div class="col-sm-9">
+                            @Html.DropDownList("IDPT", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.IDPT, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Trạng thái</label>
+                        <div class="col-sm-9">
+                            @Html.DropDownList("IDTrangThai", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.IDTrangThai, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Tên khách hàng lẻ</label>
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.TenKHKhongAccount, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.TenKHKhongAccount, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Số điện thoại khách lẻ</label>
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.DienThoaiKhongAccount, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DienThoaiKhongAccount, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Ghi chú</label>
+                        <div class="col-sm-9">
+                            @Html.EditorFor(model => model.GhiChu, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.GhiChu, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <button style="width:100px; type="submit" value="Create" class="btn btn-primary mr-2">Create</button>
+
+                    <a href="~/Admin/AdminDonDatHangs/Index">
+                        <button type="button" class="btn btn-outline-secondary btn-lg btn-block" style="width:300px; margin-top:40px">Trở về</button>
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+}

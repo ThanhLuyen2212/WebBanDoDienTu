@@ -12,6 +12,8 @@ namespace WebBanHang.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class WebBanDoDienTuEntities : DbContext
     {
@@ -32,7 +34,139 @@ namespace WebBanHang.Models
         public virtual DbSet<LoaiMatHang> LoaiMatHangs { get; set; }
         public virtual DbSet<MatHang> MatHangs { get; set; }
         public virtual DbSet<PhuongThucThanhToan> PhuongThucThanhToans { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TrangThai> TrangThais { get; set; }
+    
+        public virtual int sp_DanhGiaMatHangDaMua(Nullable<int> idMH, Nullable<int> soSaoDanhGia, string binhLuan)
+        {
+            var idMHParameter = idMH.HasValue ?
+                new ObjectParameter("idMH", idMH) :
+                new ObjectParameter("idMH", typeof(int));
+    
+            var soSaoDanhGiaParameter = soSaoDanhGia.HasValue ?
+                new ObjectParameter("SoSaoDanhGia", soSaoDanhGia) :
+                new ObjectParameter("SoSaoDanhGia", typeof(int));
+    
+            var binhLuanParameter = binhLuan != null ?
+                new ObjectParameter("BinhLuan", binhLuan) :
+                new ObjectParameter("BinhLuan", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_DanhGiaMatHangDaMua", idMHParameter, soSaoDanhGiaParameter, binhLuanParameter);
+        }
+    
+        public virtual int sp_ThemKhachHangMoi(string tenKH, string sDT, string diaChiGiaoHang1, string diaChiGiaoHang2, string email, Nullable<System.DateTime> ngaySinh, string userName, string password)
+        {
+            var tenKHParameter = tenKH != null ?
+                new ObjectParameter("TenKH", tenKH) :
+                new ObjectParameter("TenKH", typeof(string));
+    
+            var sDTParameter = sDT != null ?
+                new ObjectParameter("SDT", sDT) :
+                new ObjectParameter("SDT", typeof(string));
+    
+            var diaChiGiaoHang1Parameter = diaChiGiaoHang1 != null ?
+                new ObjectParameter("DiaChiGiaoHang1", diaChiGiaoHang1) :
+                new ObjectParameter("DiaChiGiaoHang1", typeof(string));
+    
+            var diaChiGiaoHang2Parameter = diaChiGiaoHang2 != null ?
+                new ObjectParameter("DiaChiGiaoHang2", diaChiGiaoHang2) :
+                new ObjectParameter("DiaChiGiaoHang2", typeof(string));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            var ngaySinhParameter = ngaySinh.HasValue ?
+                new ObjectParameter("NgaySinh", ngaySinh) :
+                new ObjectParameter("NgaySinh", typeof(System.DateTime));
+    
+            var userNameParameter = userName != null ?
+                new ObjectParameter("UserName", userName) :
+                new ObjectParameter("UserName", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_ThemKhachHangMoi", tenKHParameter, sDTParameter, diaChiGiaoHang1Parameter, diaChiGiaoHang2Parameter, emailParameter, ngaySinhParameter, userNameParameter, passwordParameter);
+        }
+    
+        public virtual ObjectResult<DonDatHang> sp_TimKiemDonDatHang(Nullable<System.DateTime> ngayBatDau, Nullable<System.DateTime> ngayKetThuc)
+        {
+            var ngayBatDauParameter = ngayBatDau.HasValue ?
+                new ObjectParameter("NgayBatDau", ngayBatDau) :
+                new ObjectParameter("NgayBatDau", typeof(System.DateTime));
+    
+            var ngayKetThucParameter = ngayKetThuc.HasValue ?
+                new ObjectParameter("NgayKetThuc", ngayKetThuc) :
+                new ObjectParameter("NgayKetThuc", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<DonDatHang>("sp_TimKiemDonDatHang", ngayBatDauParameter, ngayKetThucParameter);
+        }
+    
+        public virtual ObjectResult<DonDatHang> sp_TimKiemDonDatHang(Nullable<System.DateTime> ngayBatDau, Nullable<System.DateTime> ngayKetThuc, MergeOption mergeOption)
+        {
+            var ngayBatDauParameter = ngayBatDau.HasValue ?
+                new ObjectParameter("NgayBatDau", ngayBatDau) :
+                new ObjectParameter("NgayBatDau", typeof(System.DateTime));
+    
+            var ngayKetThucParameter = ngayKetThuc.HasValue ?
+                new ObjectParameter("NgayKetThuc", ngayKetThuc) :
+                new ObjectParameter("NgayKetThuc", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<DonDatHang>("sp_TimKiemDonDatHang", mergeOption, ngayBatDauParameter, ngayKetThucParameter);
+        }
+    
+        public virtual ObjectResult<MatHang> sp_TimKiemSanPham(string kyTuTimKiem)
+        {
+            var kyTuTimKiemParameter = kyTuTimKiem != null ?
+                new ObjectParameter("KyTuTimKiem", kyTuTimKiem) :
+                new ObjectParameter("KyTuTimKiem", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MatHang>("sp_TimKiemSanPham", kyTuTimKiemParameter);
+        }
+    
+        public virtual ObjectResult<MatHang> sp_TimKiemSanPham(string kyTuTimKiem, MergeOption mergeOption)
+        {
+            var kyTuTimKiemParameter = kyTuTimKiem != null ?
+                new ObjectParameter("KyTuTimKiem", kyTuTimKiem) :
+                new ObjectParameter("KyTuTimKiem", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MatHang>("sp_TimKiemSanPham", mergeOption, kyTuTimKiemParameter);
+        }
+    
+        public virtual int ThongKeTheoDoanhThuTheoSanPham(Nullable<System.DateTime> ngayBatDau, Nullable<System.DateTime> ngayKetThuc)
+        {
+            var ngayBatDauParameter = ngayBatDau.HasValue ?
+                new ObjectParameter("NgayBatDau", ngayBatDau) :
+                new ObjectParameter("NgayBatDau", typeof(System.DateTime));
+    
+            var ngayKetThucParameter = ngayKetThuc.HasValue ?
+                new ObjectParameter("NgayKetThuc", ngayKetThuc) :
+                new ObjectParameter("NgayKetThuc", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ThongKeTheoDoanhThuTheoSanPham", ngayBatDauParameter, ngayKetThucParameter);
+        }
+    
+        public virtual int sp_ThayDoiMatKhau(Nullable<int> maKH, string matKhauMoi)
+        {
+            var maKHParameter = maKH.HasValue ?
+                new ObjectParameter("MaKH", maKH) :
+                new ObjectParameter("MaKH", typeof(int));
+    
+            var matKhauMoiParameter = matKhauMoi != null ?
+                new ObjectParameter("MatKhauMoi", matKhauMoi) :
+                new ObjectParameter("MatKhauMoi", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_ThayDoiMatKhau", maKHParameter, matKhauMoiParameter);
+        }
+    
+        public virtual int sp_XoaDonDatHangChuaDuyet(Nullable<int> iDDDH)
+        {
+            var iDDDHParameter = iDDDH.HasValue ?
+                new ObjectParameter("IDDDH", iDDDH) :
+                new ObjectParameter("IDDDH", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_XoaDonDatHangChuaDuyet", iDDDHParameter);
+        }
     }
 }

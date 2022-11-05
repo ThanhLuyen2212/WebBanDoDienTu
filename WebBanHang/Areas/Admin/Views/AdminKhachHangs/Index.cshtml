@@ -29,19 +29,19 @@
                                 Số điện thoại
                             </th>
                             <th style="color:white">
-                                Địa chỉ
-                            </th>
+                                Địa chỉ giao hàng 1
+                            </th> 
                             <th style="color:white">
                                 Email
                             </th>
                             <th style="color:white">
-                                Ngày sinh
+                                Điểm tích lũy
                             </th>
                             <th style="color:white">
-                                Username
+                                Điểm tích lũy còn lại
                             </th>
                             <th style="color:white">
-                                Passowrd
+                                Loại khách hàng
                             </th>
                             <th></th>
                         </tr>
@@ -58,19 +58,22 @@
                                     @Html.DisplayFor(modelItem => item.SDT)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.DiaChi)
+                                    @Html.DisplayFor(modelItem => item.DiaChiGiaoHang1)
                                 </td>
+                               
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Email)
                                 </td>
+                               
+                              
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.NgaySinh)
+                                    @Html.DisplayFor(modelItem => item.DiemTichLuy)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.UserName)
+                                    @Html.DisplayFor(modelItem => item.DiemTichLuyConLai)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Password)
+                                    @Html.DisplayFor(modelItem => item.LoaiKhachHang)
                                 </td>
 
                                 <td>

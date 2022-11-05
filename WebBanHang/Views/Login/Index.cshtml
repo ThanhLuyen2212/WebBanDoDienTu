@@ -48,13 +48,15 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Password</label> <br />
-                                            <input id="Password" name="Password"  type="password" class="form-control p_input">
+                                            <input id="Password" name="Password" type="password" class="form-control p_input">
                                             <td>@Html.ValidationMessageFor(model => model.Password)</td>
                                         </div>
+                                        
                                         @if (ViewBag.ErrorInfo != null)
                                         {
-                                            <p class="text-danger">@ViewBag.ErrorInfor</p>
+                                            <p class="text-danger">@ViewBag.ErrorInfo</p>
                                         }
+
                                         <div class="text-center" style="margin-top:30px; justify-content: center; display: flex">
                                             <input type="submit" class="btn btn-primary btn-block enter-btn" value="Login" style="height: 50px; width: 200px" />
                                         </div>

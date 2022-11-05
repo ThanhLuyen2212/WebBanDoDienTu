@@ -1,9 +1,63 @@
-﻿@model WebBanHang.Models.ChiTietHoaDon
+﻿@model WebBanHang.Models.ChiTietDonDatHang
 
 @{
     ViewBag.Title = "Details";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
+
+<h2>Details</h2>
+
+<div>
+    <h4>ChiTietDonDatHang</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DanhGiaSanPham)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DanhGiaSanPham)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BinhLuan)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BinhLuan)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SoluongMH)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SoluongMH)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DonDatHang.DiaChiNhanHang)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DonDatHang.DiaChiNhanHang)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MatHang.TenMH)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MatHang.TenMH)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IDChiTietDDH }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
 
 
 <div class="col-md-6 grid-margin stretch-card">
@@ -15,7 +69,7 @@
                 <div class="form-group row">
                     <label for="exampleInputUsername2" class="col-sm-3 col-form-label">ID hóa đơn</label>
                     <div class="col-sm-9">
-                        @Html.DisplayFor(model => model.IDHD)
+                        @Html.DisplayFor(model => model.IDDDH)
                     </div>
                 </div>
                 <div class="form-group row">
@@ -30,7 +84,7 @@
                         @Html.DisplayFor(model => model.SoluongMH)
                     </div>
                 </div>
-                
+
 
 
                 <a href="~/Admin/AdminChiTietHoaDons/Edit/@Model.IDMH">
