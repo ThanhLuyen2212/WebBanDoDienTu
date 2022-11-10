@@ -43,6 +43,7 @@
           <Property Name="NgayThanhToan" Type="date" />
           <Property Name="IDPT" Type="int" />
           <Property Name="IDTrangThai" Type="int" />
+          <Property Name="IDNhanVien" Type="int" />
           <Property Name="GhiChu" Type="nvarchar(max)" />
           <Property Name="TenKHKhongAccount" Type="nvarchar" MaxLength="300" />
           <Property Name="DienThoaiKhongAccount" Type="nvarchar" MaxLength="20" />
@@ -71,6 +72,16 @@
           <Property Name="IDLoaiMH" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TenLoaiMH" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="MaGiamGia">
+          <Key>
+            <PropertyRef Name="IDMaGiamGia" />
+          </Key>
+          <Property Name="IDMaGiamGia" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="TenMaGiamGia" Type="nvarchar" MaxLength="100" />
+          <Property Name="NgayBatDauGiamGia" Type="date" />
+          <Property Name="NgayKetThucGiamGia" Type="date" />
+          <Property Name="SoTienGiam" Type="int" />
+        </EntityType>
         <EntityType Name="MatHang">
           <Key>
             <PropertyRef Name="IDMH" />
@@ -87,6 +98,17 @@
           <Property Name="HinhAnh3" Type="image" />
           <Property Name="HinhAnh4" Type="image" />
           <Property Name="MoTaChiTiet" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="NhanVien">
+          <Key>
+            <PropertyRef Name="IDNhanVien" />
+          </Key>
+          <Property Name="IDNhanVien" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenNhanVien" Type="nvarchar" MaxLength="100" />
+          <Property Name="SDT" Type="nvarchar" MaxLength="20" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="DiaChi" Type="nvarchar" MaxLength="100" />
+          <Property Name="ChucVu" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="PhuongThucThanhToan">
           <Key>
@@ -138,6 +160,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DONDATHANG_NHANVIEN">
+          <End Role="NhanVien" Type="Self.NhanVien" Multiplicity="0..1" />
+          <End Role="DonDatHang" Type="Self.DonDatHang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NhanVien">
+              <PropertyRef Name="IDNhanVien" />
+            </Principal>
+            <Dependent Role="DonDatHang">
+              <PropertyRef Name="IDNhanVien" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DONDATHANG_PHUONGTHUC">
           <End Role="PhuongThucThanhToan" Type="Self.PhuongThucThanhToan" Multiplicity="0..1" />
           <End Role="DonDatHang" Type="Self.DonDatHang" Multiplicity="*" />
@@ -179,9 +213,22 @@
           <Parameter Name="SoSaoDanhGia" Type="int" Mode="In" />
           <Parameter Name="BinhLuan" Type="nvarchar(max)" Mode="In" />
         </Function>
+        <Function Name="sp_GiamDiemKhachHangKhiMuaHangSuDungDiem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idkh" Type="int" Mode="In" />
+          <Parameter Name="diemdadung" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_LietKeDonDatHangTheoNgay" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NgayBatDau" Type="date" Mode="In" />
+          <Parameter Name="NgayKetThuc" Type="date" Mode="In" />
+          <Parameter Name="IDPhuongThucThanhToan" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_ThayDoiMatKhau" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MaKH" Type="int" Mode="In" />
           <Parameter Name="MatKhauMoi" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_ThemDiemKhachHangKhiMuaHang" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idkh" Type="int" Mode="In" />
+          <Parameter Name="DiemThem" Type="int" Mode="In" />
         </Function>
         <Function Name="sp_ThemKhachHangMoi" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TenKH" Type="nvarchar" Mode="In" />
@@ -193,6 +240,10 @@
           <Parameter Name="UserName" Type="nvarchar" Mode="In" />
           <Parameter Name="Password" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="sp_ThongKeTheoDoanhThuTheoSanPham" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NgayBatDau" Type="date" Mode="In" />
+          <Parameter Name="NgayKetThuc" Type="date" Mode="In" />
+        </Function>
         <Function Name="sp_TimKiemDonDatHang" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="NgayBatDau" Type="date" Mode="In" />
           <Parameter Name="NgayKetThuc" Type="date" Mode="In" />
@@ -200,12 +251,11 @@
         <Function Name="sp_TimKiemSanPham" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="KyTuTimKiem" Type="nvarchar(max)" Mode="In" />
         </Function>
-        <Function Name="sp_XoaDonDatHangChuaDuyet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+        <Function Name="sp_XoaDonDatHangADMIN" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IDDDH" Type="int" Mode="In" />
         </Function>
-        <Function Name="ThongKeTheoDoanhThuTheoSanPham" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="NgayBatDau" Type="date" Mode="In" />
-          <Parameter Name="NgayKetThuc" Type="date" Mode="In" />
+        <Function Name="sp_XoaDonDatHangChuaDuyet" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDDDH" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="WebBanDoDienTuModelStoreContainer">
           <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
@@ -213,7 +263,9 @@
           <EntitySet Name="DonDatHang" EntityType="Self.DonDatHang" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="KhachHang" EntityType="Self.KhachHang" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LoaiMatHang" EntityType="Self.LoaiMatHang" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MaGiamGia" EntityType="Self.MaGiamGia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MatHang" EntityType="Self.MatHang" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NhanVien" EntityType="Self.NhanVien" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PhuongThucThanhToan" EntityType="Self.PhuongThucThanhToan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TrangThai" EntityType="Self.TrangThai" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_CHITIETDONDATHANG_DONDATHANG" Association="Self.FK_CHITIETDONDATHANG_DONDATHANG">
@@ -226,6 +278,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_DONDATHANG_KHACHHANG" Association="Self.FK_DONDATHANG_KHACHHANG">
             <End Role="KhachHang" EntitySet="KhachHang" />
+            <End Role="DonDatHang" EntitySet="DonDatHang" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DONDATHANG_NHANVIEN" Association="Self.FK_DONDATHANG_NHANVIEN">
+            <End Role="NhanVien" EntitySet="NhanVien" />
             <End Role="DonDatHang" EntitySet="DonDatHang" />
           </AssociationSet>
           <AssociationSet Name="FK_DONDATHANG_PHUONGTHUC" Association="Self.FK_DONDATHANG_PHUONGTHUC">
@@ -292,6 +348,8 @@
           <NavigationProperty Name="KhachHang" Relationship="Self.FK_DONDATHANG_KHACHHANG" FromRole="DonDatHang" ToRole="KhachHang" />
           <NavigationProperty Name="PhuongThucThanhToan" Relationship="Self.FK_DONDATHANG_PHUONGTHUC" FromRole="DonDatHang" ToRole="PhuongThucThanhToan" />
           <NavigationProperty Name="TrangThai" Relationship="Self.FK_DONDATHANG_TRANGTHAI" FromRole="DonDatHang" ToRole="TrangThai" />
+          <Property Name="IDNhanVien" Type="Int32" />
+          <NavigationProperty Name="NhanVien" Relationship="WebBanDoDienTuModel.FK_DONDATHANG_NHANVIEN" FromRole="DonDatHang" ToRole="NhanVien" />
         </EntityType>
         <EntityType Name="KhachHang">
           <Key>
@@ -481,18 +539,74 @@
           <FunctionImport Name="sp_TimKiemSanPham" EntitySet="MatHangs" ReturnType="Collection(WebBanDoDienTuModel.MatHang)">
           <Parameter Name="KyTuTimKiem" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="ThongKeTheoDoanhThuTheoSanPham">
-            <Parameter Name="NgayBatDau" Mode="In" Type="DateTime" />
-            <Parameter Name="NgayKetThuc" Mode="In" Type="DateTime" />
-          </FunctionImport>
           <FunctionImport Name="sp_ThayDoiMatKhau">
             <Parameter Name="MaKH" Mode="In" Type="Int32" />
             <Parameter Name="MatKhauMoi" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_XoaDonDatHangChuaDuyet">
-            <Parameter Name="IDDDH" Mode="In" Type="Int32" />
+          <Parameter Name="IDDDH" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThongKeTheoDoanhThuTheoSanPham" EntitySet="MatHangs" ReturnType="Collection(WebBanDoDienTuModel.MatHang)">
+            <Parameter Name="NgayBatDau" Mode="In" Type="DateTime" />
+            <Parameter Name="NgayKetThuc" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="sp_LietKeDonDatHangTheoNgay" EntitySet="DonDatHangs" ReturnType="Collection(WebBanDoDienTuModel.DonDatHang)">
+            <Parameter Name="NgayBatDau" Mode="In" Type="DateTime" />
+            <Parameter Name="NgayKetThuc" Mode="In" Type="DateTime" />
+            <Parameter Name="IDPhuongThucThanhToan" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_XoaDonDatHangADMIN">
+          <Parameter Name="IDDDH" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="MaGiamGias" EntityType="WebBanDoDienTuModel.MaGiamGia" />
+          <EntitySet Name="NhanViens" EntityType="WebBanDoDienTuModel.NhanVien" />
+          <AssociationSet Name="FK_DONDATHANG_NHANVIEN" Association="WebBanDoDienTuModel.FK_DONDATHANG_NHANVIEN">
+            <End Role="NhanVien" EntitySet="NhanViens" />
+            <End Role="DonDatHang" EntitySet="DonDatHangs" />
+          </AssociationSet>
+          <FunctionImport Name="sp_GiamDiemKhachHangKhiMuaHangSuDungDiem">
+            <Parameter Name="idkh" Mode="In" Type="Int32" />
+            <Parameter Name="diemdadung" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThemDiemKhachHangKhiMuaHang">
+            <Parameter Name="idkh" Mode="In" Type="Int32" />
+            <Parameter Name="DiemThem" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
+        <EntityType Name="MaGiamGia">
+          <Key>
+            <PropertyRef Name="IDMaGiamGia" />
+          </Key>
+          <Property Name="IDMaGiamGia" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TenMaGiamGia" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="NgayBatDauGiamGia" Type="DateTime" Precision="0" />
+          <Property Name="NgayKetThucGiamGia" Type="DateTime" Precision="0" />
+          <Property Name="SoTienGiam" Type="Int32" />
+        </EntityType>
+        <EntityType Name="NhanVien">
+          <Key>
+            <PropertyRef Name="IDNhanVien" />
+          </Key>
+          <Property Name="IDNhanVien" Type="Int32" Nullable="false" />
+          <Property Name="TenNhanVien" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SDT" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DiaChi" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ChucVu" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DonDatHangs" Relationship="WebBanDoDienTuModel.FK_DONDATHANG_NHANVIEN" FromRole="NhanVien" ToRole="DonDatHang" />
+        </EntityType>
+        <Association Name="FK_DONDATHANG_NHANVIEN">
+          <End Type="WebBanDoDienTuModel.NhanVien" Role="NhanVien" Multiplicity="0..1" />
+          <End Type="WebBanDoDienTuModel.DonDatHang" Role="DonDatHang" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NhanVien">
+              <PropertyRef Name="IDNhanVien" />
+            </Principal>
+            <Dependent Role="DonDatHang">
+              <PropertyRef Name="IDNhanVien" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -528,6 +642,7 @@
           <EntitySetMapping Name="DonDatHangs">
             <EntityTypeMapping TypeName="WebBanDoDienTuModel.DonDatHang">
               <MappingFragment StoreEntitySet="DonDatHang">
+                <ScalarProperty Name="IDNhanVien" ColumnName="IDNhanVien" />
                 <ScalarProperty Name="IDDDH" ColumnName="IDDDH" />
                 <ScalarProperty Name="NgayMua" ColumnName="NgayMua" />
                 <ScalarProperty Name="DiaChiNhanHang" ColumnName="DiaChiNhanHang" />
@@ -610,10 +725,38 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_TimKiemSanPham" FunctionName="WebBanDoDienTuModel.Store.sp_TimKiemSanPham">
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="ThongKeTheoDoanhThuTheoSanPham" FunctionName="WebBanDoDienTuModel.Store.ThongKeTheoDoanhThuTheoSanPham">
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_ThayDoiMatKhau" FunctionName="WebBanDoDienTuModel.Store.sp_ThayDoiMatKhau" />
           <FunctionImportMapping FunctionImportName="sp_XoaDonDatHangChuaDuyet" FunctionName="WebBanDoDienTuModel.Store.sp_XoaDonDatHangChuaDuyet" />
+          <FunctionImportMapping FunctionImportName="sp_ThongKeTheoDoanhThuTheoSanPham" FunctionName="WebBanDoDienTuModel.Store.sp_ThongKeTheoDoanhThuTheoSanPham">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_LietKeDonDatHangTheoNgay" FunctionName="WebBanDoDienTuModel.Store.sp_LietKeDonDatHangTheoNgay">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_XoaDonDatHangADMIN" FunctionName="WebBanDoDienTuModel.Store.sp_XoaDonDatHangADMIN" />
+          <EntitySetMapping Name="MaGiamGias">
+            <EntityTypeMapping TypeName="WebBanDoDienTuModel.MaGiamGia">
+              <MappingFragment StoreEntitySet="MaGiamGia">
+                <ScalarProperty Name="SoTienGiam" ColumnName="SoTienGiam" />
+                <ScalarProperty Name="NgayKetThucGiamGia" ColumnName="NgayKetThucGiamGia" />
+                <ScalarProperty Name="NgayBatDauGiamGia" ColumnName="NgayBatDauGiamGia" />
+                <ScalarProperty Name="TenMaGiamGia" ColumnName="TenMaGiamGia" />
+                <ScalarProperty Name="IDMaGiamGia" ColumnName="IDMaGiamGia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NhanViens">
+            <EntityTypeMapping TypeName="WebBanDoDienTuModel.NhanVien">
+              <MappingFragment StoreEntitySet="NhanVien">
+                <ScalarProperty Name="ChucVu" ColumnName="ChucVu" />
+                <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="SDT" ColumnName="SDT" />
+                <ScalarProperty Name="TenNhanVien" ColumnName="TenNhanVien" />
+                <ScalarProperty Name="IDNhanVien" ColumnName="IDNhanVien" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_GiamDiemKhachHangKhiMuaHangSuDungDiem" FunctionName="WebBanDoDienTuModel.Store.sp_GiamDiemKhachHangKhiMuaHangSuDungDiem" />
+          <FunctionImportMapping FunctionImportName="sp_ThemDiemKhachHangKhiMuaHang" FunctionName="WebBanDoDienTuModel.Store.sp_ThemDiemKhachHangKhiMuaHang" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -49,9 +49,8 @@
                                     </div>
                                 </div>
 
-
                                 <div class="collapsible">
-
+                                    <p >Nếu bạn không thanh toán liền thì khi nhận hàng bạn phải thanh toán</p>
                                     <input type="checkbox" id="collapsible-head" name="TrangThaiThanhToan" />
                                     <label for="collapsible-head" style="display:inline-block"> Thanh toán liền</label>
 
@@ -64,10 +63,7 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
@@ -91,9 +87,116 @@
                                     }
                                 </ul>
                             </div>
+
+
+                            @*phần xử lý điểm tích lũy*@
+
+
+                            <div class="collapsible">
+                                <input type="checkbox" id="collapsible-head1" name="DungDiemTichLuy" />
+                                <label for="collapsible-head1" style="display:inline-block"> Dùng điểm tích lũy</label>
+
+                                <div class="collapsible-text">
+                                    <div class="form-group">
+                                        <label style="margin-bottom = 0px">Quý khách đang là thành viên: @ViewBag.HangCuaKhachHang</label>
+                                        <label style="margin-bottom = 0px">Điểm tích lũy hiện tại của bạn: @ViewBag.DiemTichLuyCuaKhachHang</label>
+                                        <div class="col-md-12">
+                                            <input type="number" id="diem" name="SoDiemDung" style="padding:4px 7px 4px 7px; display:inline-block" />
+                                            <input type="button" onclick="update_money()" style="padding:4px 7px 4px 7px; display:inline-block" value="Sử dụng" />
+                                            <p id="thongbao"></p>
+
+                                            <script>                                                                                               
+                                                var tiengiam1 = 0;          
+                                                var tiengiam2 = 0;
+                                                @*áp dụng điểm tích lũy*@
+                                                function update_money() {
+                                                    document.getElementById("thongbao").innerHTML = "";
+                                                    var x = document.getElementById("diem");
+                                                    var diem = x.value;
+                                                    if (diem < 0) {
+                                                        document.getElementById("thongbao").innerHTML = "Giá trị nhập vào không hợp lệ";
+                                                        return;
+                                                    }
+                                                    if (diem > @ViewBag.DiemTichLuyCuaKhachHang) {
+                                                        document.getElementById("thongbao").innerHTML = "Giá trị nhập vào không hợp lệ";
+                                                        return;
+                                                    }
+                                                    if (diem > @Model.TongTien - tiengiam2) {
+                                                        document.getElementById("thongbao").innerHTML = "Giá trị nhập vào không hợp lệ";
+                                                        return;
+                                                    }
+                                                    tiengiam1 = diem;
+                                                    var temp1 = @Model.TongTien - tiengiam1 - tiengiam2;
+                                                    if (temp1 < 0) {
+                                                        document.getElementById("giatien").innerHTML = "0 VND";
+                                                    } else {
+                                                        document.getElementById("giatien").innerHTML = temp1 + " VND";
+                                                    }
+                                                    
+                                                    
+                                                }
+
+                                                @*áp dụng mã giảm giá*@
+                                                
+                                                function checkMa() {
+                                                    var temp = document.getElementById("magiamgia").value
+
+                                                    var ma = @Html.Raw(Json.Encode(ViewBag.MaGiamGia));
+                                                    var tiengiam = @Html.Raw(Json.Encode(ViewBag.SoTienTuongUngMaGiamGia)) ;
+
+                                                    var check = false;
+
+                                                    for (i = 0; i < ma.length; i++) {
+                                                        if (ma[i] == temp) {
+                                                            check = true;
+                                                            tiengiam2 = tiengiam[i];                                                            
+                                                        }                                                            
+                                                    }
+                                                    if (check == true) {
+                                                        document.getElementById("ketqua").innerHTML = "Mã giảm giá hợp lệ";
+                                                        var temp2 = @Model.TongTien - tiengiam2 - tiengiam1;
+                                                        if (temp2 < 0) 
+                                                            document.getElementById("giatien").innerHTML = "0 VND";
+                                                        else
+                                                            document.getElementById("giatien").innerHTML = temp2 + " VND";
+                                                    }
+                                                    else {
+                                                        document.getElementById("ketqua").innerHTML = "Mã giảm giá không hợp lệ";
+                                                        document.getElementById("magiamgia").innerHTML = "";
+                                                    }
+
+                                                }
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            @*phần xử lý mã khuyến mãi*@
+
+                            <div class="collapsible">
+                                <input type="checkbox" id="collapsible-head2" name="DungMaGiamGia" onclick="TimMaKhuyenMai()"/>
+                                <label for="collapsible-head2" style="display:inline-block"> Mã Khuyến mãi</label>
+
+                                <div class="collapsible-text">
+                                    <div class="form-group">                                        
+                                        <label style="margin-bottom = 0px">Mã Khuyến mãi</label>
+                                        <div class="col-md-12">
+                                            <input type="text" id="magiamgia" name="magiamgia" style="padding:4px 7px 4px 7px; display:inline-block" />
+                                            <input type="button" onclick="checkMa()" style="padding:4px 7px 4px 7px; display:inline-block" value="Tìm" />
+                                            <p id="ketqua"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                             <div class="checkout__order__total">
                                 <ul>
-                                    <li>Tổng cộng <span class="money">@donDatHang.TongTien VND</span></li>
+
+                                    <li>Tổng giá tiền <span class="money" id="giatien">@Model.TongTien VND </span> </li>
+
                                 </ul>
                             </div>
 
@@ -108,28 +211,22 @@
 
 }
 
-
 <style>
-
-    p{
-
-    }
 
     .collapsible {
         display: inline-block;
         max-width: 450px;
     }
 
-
         .collapsible label {
             position: relative;
-            background-color: #ffffff;
+           
             box-shadow: 0 5px 11px 0 rgba(0,0,0,0.1),none 4px 11px 0 rgba(0,0,0,0.08);
             color: #1c1c6b;
             display: block;
             margin-bottom: 10px;
             cursor: pointer;
-            padding: 15px;
+            padding: 5px;
             border-radius: 4px;
         }
 
@@ -154,8 +251,6 @@
 
     .collapsible input:checked ~ .collapsible-text {
         max-height: 300px;
-        padding-bottom: 25px;
-        background: #fff;
         box-shadow: 0 5px 11px 0 rgba(0,0,0,0.1),none 4px 11px 0 rgba(0,0,0,0.08);
         top: 0;
         opacity: 1;

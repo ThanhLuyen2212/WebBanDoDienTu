@@ -5,58 +5,6 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>Details</h2>
-
-<div>
-    <h4>ChiTietDonDatHang</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.DanhGiaSanPham)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DanhGiaSanPham)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.BinhLuan)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.BinhLuan)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SoluongMH)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SoluongMH)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DonDatHang.DiaChiNhanHang)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DonDatHang.DiaChiNhanHang)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.MatHang.TenMH)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.MatHang.TenMH)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.IDChiTietDDH }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
 
 
 
@@ -87,12 +35,12 @@
 
 
 
-                <a href="~/Admin/AdminChiTietHoaDons/Edit/@Model.IDMH">
+                <a href="~/Admin/AdminChiTietDonDatHangs/Edit/@Model.IDMH">
                     <button style="width:100px; type="submit" class="btn btn-primary mr-2">Edit</button>
 
                 </a>
 
-                <a href="~/Admin/AdminChiTietHoaDons/Index">
+                <a href="~/Admin/AdminChiTietDonDatHangs/Index">
                     <button type="button" class="btn btn-outline-secondary btn-lg btn-block" style="width:300px; margin-top:40px">Trở về</button>
                 </a>
             </form>

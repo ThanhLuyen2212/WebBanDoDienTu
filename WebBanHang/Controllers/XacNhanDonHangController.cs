@@ -12,6 +12,29 @@ namespace WebBanHang.Controllers
     {
         WebBanDoDienTuEntities data = new WebBanDoDienTuEntities();
 
+        public List<string> maGiamGia()
+        {
+            List<string> maGiamGiaList = new List<string>();
+            List<MaGiamGia> temp =  data.MaGiamGias.ToList();
+            foreach (MaGiamGia item in temp)
+            {
+                maGiamGiaList.Add(item.IDMaGiamGia.ToString());
+            }
+            return maGiamGiaList;
+        }
+
+        public List<int> soTienTuongUnMaGiamGia()
+        {
+            List<int> tien = new List<int>();
+            List<MaGiamGia> temp = data.MaGiamGias.ToList();
+            foreach (MaGiamGia item in temp)
+            {
+                tien.Add(int.Parse(item.SoTienGiam.ToString()));
+            }
+            return tien;
+        }
+
+
         // GET: Admin/AdminDonDatHangs/Edit/5
         public ActionResult XacNhan(int? id)
         {
@@ -32,6 +55,12 @@ namespace WebBanHang.Controllers
             ViewBag.GioHang = gioHang;   
 
             ViewData["IDPT"] = new SelectList(data.PhuongThucThanhToans, "IDPT", "TenPT", donDatHang.IDPT);
+            KhachHang kh = data.KhachHangs.Find(donDatHang.KhachHang.IDKH);
+            ViewBag.DiemTichLuyCuaKhachHang = kh.DiemTichLuyConLai;
+            ViewBag.MaGiamGia = maGiamGia();
+            ViewBag.SoTienTuongUngMaGiamGia = soTienTuongUnMaGiamGia();
+            ViewBag.HangCuaKhachHang = kh.LoaiKhachHang;
+
            
             return View(donDatHang);
         }
@@ -49,12 +78,14 @@ namespace WebBanHang.Controllers
                 if (checkbox != null)
                 {
                     donDatHang.TrangThaiThanhToan = true;
-                    donDatHang.NgayThanhToan = DateTime.Now;                    
+                    donDatHang.NgayThanhToan = DateTime.Now;
                 }
                 else
                 {
                     donDatHang.TrangThaiThanhToan = false;
+                    donDatHang.IDPT = 8;
                 }
+
                 data.Entry(donDatHang).State = System.Data.Entity.EntityState.Modified;
                 DonDatHang donDatHang1 = (DonDatHang)Session["DonDatHang"];
 
@@ -64,6 +95,41 @@ namespace WebBanHang.Controllers
                 donDatHang.TongTien = donDatHang1.TongTien;
                 donDatHang.NgayMua = DateTime.Now;
 
+                if (donDatHang.DiaChiNhanHang == null)
+                {
+                KhachHang kh1 = data.KhachHangs.Where(c => c.IDKH == donDatHang.IDKH).FirstOrDefault();
+                    donDatHang.DiaChiNhanHang = kh1.DiaChiGiaoHang1;
+                }
+
+
+                var checkmagiamgia = Request.Form.Get("DungMaGiamGia");
+                if (checkbox != null)
+                {
+                    string magiamgia = Request.Form.Get("magiamgia");
+                    if (magiamgia != null)
+                    {
+                        MaGiamGia mgg = data.MaGiamGias.Where(c => c.IDMaGiamGia == magiamgia).FirstOrDefault();
+                        if (mgg != null)
+                        {
+                            donDatHang.TongTien = donDatHang.TongTien - mgg.SoTienGiam;
+                            if (donDatHang.TongTien < 0) donDatHang.TongTien = 0;
+                        }
+                    }
+                }
+
+
+                var checkboxDiemTichLuy = Request.Form.Get("DungDiemTichLuy");
+                if (checkboxDiemTichLuy != null)
+                {
+                    var diemdung = Request.Form.Get("SoDiemDung");
+                    donDatHang.TongTien = donDatHang.TongTien - int.Parse(diemdung.ToString());
+                    if (donDatHang.TongTien < 0) donDatHang.TongTien = 0;
+                    data.sp_GiamDiemKhachHangKhiMuaHangSuDungDiem(donDatHang.IDKH, int.Parse(diemdung.ToString()));
+                }
+
+
+                int diem_tang = (int)donDatHang.TongTien / 10000;
+                data.sp_ThemDiemKhachHangKhiMuaHang(donDatHang.IDKH, diem_tang);
                 data.SaveChanges();
                 Session.Remove("DonDatHang");
                 Session.Remove("GioHang");
@@ -88,7 +154,12 @@ namespace WebBanHang.Controllers
             ViewBag.IDKH = new SelectList(data.KhachHangs, "IDKH", "TenKH", donDatHang.IDKH);
             ViewBag.IDPT = new SelectList(data.PhuongThucThanhToans, "IDPT", "TenPT", donDatHang.IDPT);
             ViewBag.IDTrangThai = new SelectList(data.TrangThais, "IDTrangThai", "TenTrangThai", donDatHang.IDTrangThai);
-            
+            KhachHang kh = data.KhachHangs.Find(donDatHang.KhachHang.IDKH);
+            ViewBag.DiemTichLuyCuaKhachHang = kh.DiemTichLuyConLai;
+            ViewBag.HangCuaKhachHang = kh.LoaiKhachHang;
+            ViewBag.MaGiamGia = maGiamGia();
+            ViewBag.SoTienTuongUngMaGiamGia = soTienTuongUnMaGiamGia();
+
             return View(donDatHang);
         }
 

@@ -68,6 +68,20 @@ create table TrangThai
 	IDTrangThai int primary key identity(1,1),
 	TenTrangThai nvarchar(20),
 )
+
+
+-- Bảng nhân viên
+go
+create table NhanVien(
+	IDNhanVien int primary key identity(1,1),
+	TenNhanVien nvarchar(100),
+	SDT nvarchar(20),
+	Email nvarchar(100),
+	DiaChi nvarchar(100),
+	ChucVu nvarchar(100),--Admin, chủ cửa hàng, nhân viên bán hàng, nhân viên giao hàng, nhân viên kho
+)
+
+
 go
 create table DonDatHang
 (
@@ -80,12 +94,13 @@ create table DonDatHang
 	TrangThaiThanhToan bit, -- 0 là chứa thanh toán, 1 là đã thanh toán 
 	NgayThanhToan date,
 	IDPT int, -- phương thức thanh toán or hình thức thanh toán 
-	IDTrangThai int,-- trạng thái hóa đơn
-	
+	IDTrangThai int,-- trạng thái hóa đơn	
+	IDNhanVien int, -- nhân viên giao hàng
 	GhiChu nvarchar(max),
 	CONSTRAINT FK_DONDATHANG_KHACHHANG FOREIGN KEY (IDKH) REFERENCES KhachHang(IDKH),
 	CONSTRAINT FK_DONDATHANG_PHUONGTHUC FOREIGN KEY (IDPT) REFERENCES PhuongThucThanhToan(IDPT),
 	CONSTRAINT FK_DONDATHANG_TRANGTHAI FOREIGN KEY (IDTrangThai) REFERENCES TrangThai(IDTrangThai),
+	CONSTRAINT FK_DONDATHANG_NHANVIEN FOREIGN KEY (IDNhanVien) REFERENCES NhanVien(IDNhanVien),
 
 	TenKHKhongAccount nvarchar(300), -- tên khách hàng không có tài khoản khi mua
 	DienThoaiKhongAccount nvarchar(20), -- trạng thái mua khi không có tài khoản
@@ -104,6 +119,51 @@ create table ChiTietDonDatHang
 	CONSTRAINT FK_CHITIETDONDATHANG_DONDATHANG FOREIGN KEY (IDDDH) REFERENCES DonDatHang(IDDDH),
 	CONSTRAINT FK_CHITIETDONDATHANG_MATHANG FOREIGN KEY (IDMH) REFERENCES MatHang(IDMH),
 )
+
+-- Bảng mã giảm giá
+go
+create table MaGiamGia(
+	IDMaGiamGia nvarchar(100) primary key,	
+	TenMaGiamGia nvarchar(100),
+	NgayBatDauGiamGia date,
+	NgayKetThucGiamGia date,
+	SoTienGiam int,
+)
+
+-- tạo dữ liệu mã giảm giá
+go
+insert into MaGiamGia (IDMaGiamGia, TenMaGiamGia,NgayBatDauGiamGia,NgayKetThucGiamGia,SoTienGiam) values('AAA', N'Mã giảm giá','2022/10/10','2022/12/30',10000)
+insert into MaGiamGia (IDMaGiamGia, TenMaGiamGia,NgayBatDauGiamGia,NgayKetThucGiamGia,SoTienGiam) values('BBB', N'Mã giảm giá','2022/10/10','2022/12/30',10000)
+insert into MaGiamGia (IDMaGiamGia, TenMaGiamGia,NgayBatDauGiamGia,NgayKetThucGiamGia,SoTienGiam) values('CCC', N'Mã giảm giá','2022/10/10','2022/12/30',10000)
+insert into MaGiamGia (IDMaGiamGia, TenMaGiamGia,NgayBatDauGiamGia,NgayKetThucGiamGia,SoTienGiam) values('DDD', N'Mã giảm giá','2022/10/10','2022/12/30',10000)
+insert into MaGiamGia (IDMaGiamGia, TenMaGiamGia,NgayBatDauGiamGia,NgayKetThucGiamGia,SoTienGiam) values('EEE', N'Mã giảm giá','2022/10/10','2022/12/30',10000)
+insert into MaGiamGia (IDMaGiamGia, TenMaGiamGia,NgayBatDauGiamGia,NgayKetThucGiamGia,SoTienGiam) values('FFF', N'Mã giảm giá','2022/10/10','2022/12/30',10000)
+insert into MaGiamGia (IDMaGiamGia, TenMaGiamGia,NgayBatDauGiamGia,NgayKetThucGiamGia,SoTienGiam) values('GGG', N'Mã giảm giá','2022/10/10','2022/12/30',10000)
+insert into MaGiamGia (IDMaGiamGia, TenMaGiamGia,NgayBatDauGiamGia,NgayKetThucGiamGia,SoTienGiam) values('HHH', N'Mã giảm giá','2022/10/10','2022/12/30',10000)
+
+
+-- tạo dữ liệu nhân viên giao hàng
+insert into NhanVien ( TenNhanVien, SDT, Email, DiaChi, ChucVu) values ('Lanni McCurtain', '8526666898', 'lmccurtain0@list-manage.com', '24297 Bluestem Park', N'Chủ của hàng');
+insert into NhanVien ( TenNhanVien, SDT, Email, DiaChi, ChucVu) values ('Nerte Havesides', '3019308613', 'nhavesides1@shutterfly.com', '748 Talisman Circle', N'Nhân viên giao hàng');
+insert into NhanVien ( TenNhanVien, SDT, Email, DiaChi, ChucVu) values ('Jereme Rawstorn', '6753025979', 'jrawstorn2@china.com.cn', '9923 Fulton Road', N'Nhân viên giao hàng');
+insert into NhanVien ( TenNhanVien, SDT, Email, DiaChi, ChucVu) values ('Luigi Stubbin', '2699449206', 'lstubbin3@patch.com', '1564 Debs Parkway', N'Nhân viên giao hàng');
+insert into NhanVien ( TenNhanVien, SDT, Email, DiaChi, ChucVu) values ('Delmore Kidder', '1987132273', 'dkidder4@harvard.edu', '2 Hayes Way', N'Nhân viên giao hàng');
+insert into NhanVien ( TenNhanVien, SDT, Email, DiaChi, ChucVu) values ('Archer Rowet', '9093490097', 'arowet5@forbes.com', '3 Sunfield Circle', N'Nhân viên giao hàng');
+insert into NhanVien ( TenNhanVien, SDT, Email, DiaChi, ChucVu) values ('Dorisa Lemmen', '5666169237', 'dlemmen6@wikispaces.com', '93868 Thierer Trail', N'Nhân viên giao hàng');
+insert into NhanVien ( TenNhanVien, SDT, Email, DiaChi, ChucVu) values ('Whitney Roughey', '5862446653', 'wroughey7@washingtonpost.com', '78093 Mcbride Point', N'Nhân viên bán hàng');
+insert into NhanVien ( TenNhanVien, SDT, Email, DiaChi, ChucVu) values ('Boycie O'' Loughran', '8154757352', 'bo8@answers.com', '54311 Norway Maple Plaza', N'Nhân viên bán hàng');
+insert into NhanVien ( TenNhanVien, SDT, Email, DiaChi, ChucVu) values ('Broddie Ostler', '7522658434', 'bostler9@archive.org', '093 Corben Parkway', N'Nhân viên bán hàng');
+insert into NhanVien ( TenNhanVien, SDT, Email, DiaChi, ChucVu) values ('Ninnette Gonnin', '9961050482', 'ngonnina@yandex.ru', '29452 Little Fleur Drive', N'Nhân viên bán hàng');
+insert into NhanVien ( TenNhanVien, SDT, Email, DiaChi, ChucVu) values ('Tasha Gwinnell', '3496679367', 'tgwinnellb@answers.com', '78122 Katie Hill', N'Nhân viên bán hàng');
+insert into NhanVien ( TenNhanVien, SDT, Email, DiaChi, ChucVu) values ('Ulises Mc Meekin', '5218937001', 'umcc@umn.edu', '065 David Trail', N'Nhân viên bán hàng');
+insert into NhanVien ( TenNhanVien, SDT, Email, DiaChi, ChucVu) values ('Lani Siebert', '4861675984', 'lsiebertd@rediff.com', '02498 Old Shore Place', N'Nhân viên bán hàng');
+insert into NhanVien ( TenNhanVien, SDT, Email, DiaChi, ChucVu) values ('Deloris Robberts', '3482209454', 'drobbertse@mtv.com', '607 Orin Crossing', N'Nhân viên kho');
+insert into NhanVien ( TenNhanVien, SDT, Email, DiaChi, ChucVu) values ('Chase Duffield', '2062064315', 'cduffieldf@china.com.cn', '5 Twin Pines Terrace', N'Nhân viên kho');
+insert into NhanVien ( TenNhanVien, SDT, Email, DiaChi, ChucVu) values ('Esme Beaver', '1632858039', 'ebeaverg@merriam-webster.com', '2 Glacier Hill Terrace', N'Nhân viên kho');
+insert into NhanVien ( TenNhanVien, SDT, Email, DiaChi, ChucVu) values ('Jory Bentson', '9402634095', 'jbentsonh@guardian.co.uk', '47 Muir Plaza', N'Nhân viên kho');
+insert into NhanVien ( TenNhanVien, SDT, Email, DiaChi, ChucVu) values ('Thalia MacNeilage', '2487229492', 'tmacneilagei@shareasale.com', '0 Namekagon Court', N'Nhân viên kho');
+insert into NhanVien ( TenNhanVien, SDT, Email, DiaChi, ChucVu) values ('Lorrie Beller', '6503055626', 'lbellerj@e-recht24.de', '8 Derek Place', N'Nhân viên kho');
+
 go 
 -- tạo dữ liệu khách hàng
 insert into KhachHang (TenKH, SDT, DiaChiGiaoHang1, DiaChiGiaoHang2, Email, NgaySinh, UserName, Password) values ('Paulie Edelheid', '398 627 8492', '3173 Gale Street', '8053 Logan Street', 'pedelheid0@redcross.org', '2022/01/15', 'pedelheid0', 'aZOEzkHeUx');
@@ -177,13 +237,17 @@ insert into TrangThai (TenTrangThai) values(N'Đơn hàng đã hủy')
 
 go
 -- tạo dữ liệu cho phương thức thanh toán 
-insert into PhuongThucThanhToan(TenPT) values(N'Tiền mặt')
+insert into PhuongThucThanhToan(TenPT) values(N'Thanh toán trực tiếp - Trả tiền mặt')
 insert into PhuongThucThanhToan(TenPT) values(N'Chuyển khoản')
 insert into PhuongThucThanhToan(TenPT) values(N'Thẻ tín dụng, thẻ ghi nợ quốc tế')
 insert into PhuongThucThanhToan(TenPT) values(N'Quét mã QR')
 insert into PhuongThucThanhToan(TenPT) values(N'Thẻ nội địa, banking ')
 insert into PhuongThucThanhToan(TenPT) values(N'Ví momo')
-
+insert into PhuongThucThanhToan(TenPT) values(N'ship code – thanh toán khi nhận hàng')
+insert into PhuongThucThanhToan(TenPT) values(N'Thanh toán khi nhận tiền')
+DBCC CHECKIDENT('PhuongThucThanhToan', RESEED, 0)
+select * from PhuongThucThanhToan
+delete PhuongThucThanhToan
 -- tạo dữ liệu đơn hàng
 go
 insert into DonDatHang (IDKH,NgayMua, DiaChiNhanHang, TongSoluong, TongTien, TrangThaiThanhToan, NgayThanhToan, IDPT, IDTrangThai) values (2,'2022/04/25', 2, 2, 2, 1, '2022/08/10', 1, 1);
@@ -198,24 +262,10 @@ insert into DonDatHang (IDKH,NgayMua, DiaChiNhanHang, TongSoluong, TongTien, Tra
 insert into DonDatHang (IDKH,NgayMua, DiaChiNhanHang, TongSoluong, TongTien, TrangThaiThanhToan, NgayThanhToan, IDPT, IDTrangThai) values (2,'2022/06/10', 2, 2, 2, 1, '2022/06/10', 1, 1);
 insert into DonDatHang (IDKH,NgayMua, DiaChiNhanHang, TongSoluong, TongTien, TrangThaiThanhToan, NgayThanhToan, IDPT, IDTrangThai) values (2,'2022/07/28', 2, 2, 2, 1, '2022/01/11', 1, 1);
 insert into DonDatHang (IDKH,NgayMua, DiaChiNhanHang, TongSoluong, TongTien, TrangThaiThanhToan, NgayThanhToan, IDPT, IDTrangThai) values (3,'2022/05/23', 2, 2, 2, 1, '2022/06/21', 1, 1);
-insert into DonDatHang (IDKH,NgayMua, DiaChiNhanHang, TongSoluong, TongTien, TrangThaiThanhToan, NgayThanhToan, IDPT, IDTrangThai) values (3,'2022/10/08', 2, 2, 2, 1, '2022/02/22', 1, 1);
-insert into DonDatHang (IDKH,NgayMua, DiaChiNhanHang, TongSoluong, TongTien, TrangThaiThanhToan, NgayThanhToan, IDPT, IDTrangThai) values (4,'2022/10/23', 2, 2, 2, 1, '2022/02/13', 1, 1);
-insert into DonDatHang (IDKH,NgayMua, DiaChiNhanHang, TongSoluong, TongTien, TrangThaiThanhToan, NgayThanhToan, IDPT, IDTrangThai) values (4,'2021/12/19', 2, 2, 2, 1, '2022/09/15', 1, 1);
-insert into DonDatHang (IDKH,NgayMua, DiaChiNhanHang, TongSoluong, TongTien, TrangThaiThanhToan, NgayThanhToan, IDPT, IDTrangThai) values (5,'2021/11/23', 2, 2, 2, 1, '2022/06/14', 1, 1);
-insert into DonDatHang (IDKH,NgayMua, DiaChiNhanHang, TongSoluong, TongTien, TrangThaiThanhToan, NgayThanhToan, IDPT, IDTrangThai) values (5,'2021/12/08', 2, 2, 2, 1, '2022/07/07', 1, 1);
-insert into DonDatHang (IDKH,NgayMua, DiaChiNhanHang, TongSoluong, TongTien, TrangThaiThanhToan, NgayThanhToan, IDPT, IDTrangThai) values (6,'2022/02/02', 2, 2, 2, 1, '2022/01/22', 1, 1);
-insert into DonDatHang (IDKH,NgayMua, DiaChiNhanHang, TongSoluong, TongTien, TrangThaiThanhToan, NgayThanhToan, IDPT, IDTrangThai) values (1,'2022/07/28', 2, 2, 2, 1, '2022/06/08', 1, 1);
-insert into DonDatHang (IDKH,NgayMua, DiaChiNhanHang, TongSoluong, TongTien, TrangThaiThanhToan, NgayThanhToan, IDPT, IDTrangThai) values (1,'2022/05/20', 2, 2, 2, 1, '2022/02/16', 1, 1);
-insert into DonDatHang (IDKH,NgayMua, DiaChiNhanHang, TongSoluong, TongTien, TrangThaiThanhToan, NgayThanhToan, IDPT, IDTrangThai) values (1,'2022/08/11', 2, 2, 2, 1, '2022/08/25', 1, 1);
-insert into DonDatHang (IDKH,NgayMua, DiaChiNhanHang, TongSoluong, TongTien, TrangThaiThanhToan, NgayThanhToan, IDPT, IDTrangThai) values (2,'2021/12/18', 2, 2, 2, 1, '2022/08/06', 1, 1);
-insert into DonDatHang (IDKH,NgayMua, DiaChiNhanHang, TongSoluong, TongTien, TrangThaiThanhToan, NgayThanhToan, IDPT, IDTrangThai) values (2,'2022/07/11', 2, 2, 2, 1, '2021/12/07', 1, 1);
-insert into DonDatHang (IDKH,NgayMua, DiaChiNhanHang, TongSoluong, TongTien, TrangThaiThanhToan, NgayThanhToan, IDPT, IDTrangThai) values (1,'2022/08/28', 2, 2, 2, 1, '2022/05/04', 1, 1);
-insert into DonDatHang (IDKH,NgayMua, DiaChiNhanHang, TongSoluong, TongTien, TrangThaiThanhToan, NgayThanhToan, IDPT, IDTrangThai) values (4,'2022/01/25', 2, 2, 2, 1, '2022/03/06', 1, 1);
-
 
  ---------------------------------------------------------------
-	---- KHU VUC DANH CHO MẶT HÀNG -------------
----------------------------------------------------------------
+----------------- KHU VUC DANH CHO MẶT HÀNG --------------------
+----------------------------------------------------------------
 
  go
  -- tìm kiếm mặt hàng create procedure tìm kiếm theo một ký tự bất kỳ bằng tên sản phẩm
@@ -223,21 +273,16 @@ insert into DonDatHang (IDKH,NgayMua, DiaChiNhanHang, TongSoluong, TongTien, Tra
  as
 	select * from MatHang where TenMH like '%'+@KyTuTimKiem+'%'
  
-
-
-
  ---------------------------------------------------------------
-	----KẾT THÚC KHU VUC DÀNH CHO MẶT HÀNG -------------
----------------------------------------------------------------
-
-
+-----------KẾT THÚC KHU VUC DÀNH CHO MẶT HÀNG ------------------
+----------------------------------------------------------------
 
 ---------------------------------------------------------------
-	---- KHU VUC DANH CHO KHÁCH HÀNG-------------
+---------------- KHU VUC DANH CHO KHÁCH HÀNG-------------------
 ---------------------------------------------------------------
 -- thêm thông tin điểm tích lũy khi thêm khách hàng
 go
-create trigger ThemDiemKhiThemKhachHang
+create trigger tg_ThemDiemKhiThemKhachHang
 on khachHang
 after insert as
 begin 
@@ -245,9 +290,6 @@ begin
 	set DiemTichLuy = 0, DiemTichLuyConLai = 0, LoaiKhachHang = N'Bạc'
 end
 
-
------------------------------------------------------------------
------------------------------------------------------------------
 
 go
 -- Tạo một khách hàng mới
@@ -263,8 +305,6 @@ begin
 end
 
 
------------------------------------------------------------------
------------------------------------------------------------------
 -- cập nhật lại thông tin loại khách hàng khi sửa đổi thông tin khách hàng
 go
 create trigger CapNhatThongTinLoaiKhachHang
@@ -295,12 +335,44 @@ begin
 	end
 	update KhachHang set Password = @MatKhauMoi where IDKH = @MaKH
 end
+
+
+-- cập nhật thông tin điểm khách hàng khi mua hàng thì điểm sẽ giảm
+go
+create proc sp_GiamDiemKhachHangKhiMuaHangSuDungDiem @idkh int, @diemdadung int
+as
+begin 
+	if not exists (select * from KhachHang where IDKH = @idkh)
+	begin 
+		rollback
+		return
+	end
+	if(@diemdadung < 0 or @diemdadung > (select DiemTichLuyConLai from KhachHang where IDKH = @idkh))
+	rollback
+	update KhachHang set DiemTichLuyConLai = DiemTichLuyConLai - @diemdadung where IDKH = @idkh
+end
+
+
+
+--Thêm điểm khách hàng khi mua hàng 
+go
+create proc sp_ThemDiemKhachHangKhiMuaHang @idkh int, @DiemThem int
+as
+begin 
+	if not exists (select * from KhachHang where IDKH = @idkh)
+	begin 
+		rollback
+		return
+	end	
+	update KhachHang set DiemTichLuyConLai = DiemTichLuyConLai + @DiemThem where IDKH = @idkh
+	update KhachHang set DiemTichLuy = DiemTichLuy + @DiemThem where IDKH = @idkh
+end
 ---------------------------------------------------------------
 ----------KẾT THÚC KHU VUC DANH CHO KHÁCH HÀNG ----------------
 ---------------------------------------------------------------
 
 ---------------------------------------------------------------
-------------KHU VUC DÀNH CHO ĐƠN ĐẶT HÀNG --------------
+------------KHU VUC DÀNH CHO ĐƠN ĐẶT HÀNG ---------------------
 ---------------------------------------------------------------
 
 -- sp_thông tin đơn đặt hàng từ ngày ... đến ngày ...
@@ -326,63 +398,88 @@ end
 
 exec sp_TimKiemDonDatHang '2022/10/26',null
 
- -- cập nhật địa chỉ đặt hàng cho đơn đặt hàng
- go
- create trigger tg_CapNhatDiaChiDonDatHang 
- on DonDatHang after update, insert as
- begin	
-	if(select (IDKH) from inserted) = null
-		return 
-	if(select DiaChiNhanHang from inserted ) = null
-	begin	
-		declare @diachi nvarchar(max)
-		declare @idkh nvarchar(max)		
-		select @diachi = DiaChiGiaoHang1 from KhachHang inner join inserted on inserted.IDKH = KhachHang.IDKH
-		update DonDatHang set DiaChiNhanHang = @diachi where IDDDH like (select IDDDH from inserted)
-	end
- end
-
+ -- cập nhật địa chỉ đặt hàng cho đơn đặt hàng -- 
 
  go
- -- xoa don dat hang chua kiem duyet
- alter proc sp_XoaDonDatHangChuaDuyet @IDDDH int
+ -- xóa đơn đặt hàng
+ -- cộng số lượng đã mua lại vào trong mặt hàng
+ Create proc sp_XoaDonDatHangChuaDuyet @IDDDH int
  as
  begin 	
-	if(select IDTrangThai from DonDatHang where IDDDH = @IDDDH and IDTrangThai = 1) not like 1
+	if not exists (select IDTrangThai from DonDatHang where IDDDH = @IDDDH)
 	begin
 		raiserror ('Don dat hang này không được xóa',16,1)
-		rollback 
-		return 
+		rollback 		
 	end	
 
-	-- tăng số lượng các mặt hàng lại vào trong mặt hàng	
-	declare ChiTietDonDatHangCursor cursor for select IDChiTietDDH from ChiTietDonDatHang	
-	open ChiTietDonDatHangCursor -- mở cursor
+	-- tăng số lượng các mặt hàng lại vào trong mặt hàng
+	-- bắt đầu cursor
+	
 	declare @idchitietDDH int
+	declare ChiTietDonDatHangCursor cursor 
+	for select IDChiTietDDH from ChiTietDonDatHang where IDDDH = @IDDDH
+
+	open ChiTietDonDatHangCursor -- mở cursor
+	
 		fetch next from ChiTietDonDatHangCursor into @idchitietDDH
+
 		while @@FETCH_STATUS = 0
 		begin
 			declare @idmh int 
 			declare @soluong int
+
 			select @idmh = IDMH, @soluong = SoluongMH from ChiTietDonDatHang where IDChiTietDDH = @idchitietDDH
+
 			update MatHang set SoLuong = SoLuong + @soluong where IDMH = @idmh
+
 			fetch next from ChiTietDonDatHangCursor into @idchitietDDH
 		end
 	close ChiTietDonDatHangCursor
 	deallocate ChiTietDonDatHangCursor 
-
-	-- kết thúc
+	-- kết thúc cursor
 	delete ChiTietDonDatHang where IDDDH = @IDDDH
 	delete DonDatHang where IDDDH = @IDDDH
  end
 
- update ChiTietDonDatHang set BinhLuan = null , DanhGiaSanPham = null
- delete DonDatHang where IDDDH = 60
- delete ChiTietDonDatHang where IDDDH = 60
----------------------------------------------------------------
-	----KẾT THÚC KHU VUC DANH CHO ĐƠN ĐẶT HÀNG --------------
----------------------------------------------------------------
 
+ -- phần Admin
+ -- Xóa đơn đặt hàng 
+ go
+ create proc sp_XoaDonDatHangADMIN @IDDDH int
+ as 
+ begin 	
+	if (select IDTrangThai from DonDatHang where IDDDH = @IDDDH) != 6  
+	begin
+		declare @idchitietDDH int
+		declare ChiTietDonDatHangCursor cursor 
+		for select IDChiTietDDH from ChiTietDonDatHang where IDDDH = @IDDDH
+
+		open ChiTietDonDatHangCursor -- mở cursor
+	
+			fetch next from ChiTietDonDatHangCursor into @idchitietDDH
+
+			while @@FETCH_STATUS = 0
+			begin
+				declare @idmh int 
+				declare @soluong int
+
+				select @idmh = IDMH, @soluong = SoluongMH from ChiTietDonDatHang where IDChiTietDDH = @idchitietDDH
+
+				update MatHang set SoLuong = SoLuong + @soluong where IDMH = @idmh
+
+				fetch next from ChiTietDonDatHangCursor into @idchitietDDH
+			end
+		close ChiTietDonDatHangCursor
+		deallocate ChiTietDonDatHangCursor 
+	end	
+	-- kết thúc cursor
+	delete ChiTietDonDatHang where IDDDH = @IDDDH
+	delete DonDatHang where IDDDH = @IDDDH
+ end
+
+---------------------------------------------------------------
+----------KẾT THÚC KHU VỰC DÀNH CHO ĐƠN ĐẶT HÀNG --------------
+---------------------------------------------------------------
 
 ---------------------------------------------------------------
 --------KHU VUC DANH CHO CHI TIẾT ĐƠN ĐẶT HÀNG ----------------
@@ -395,7 +492,8 @@ as
 
 go
 --khi thêm đơn đặt hàng thì trừ số lượng của mặt hàng đó
-alter trigger tg_TruKhiMuaDonHang 
+-- đã đúng
+create trigger tg_TruKhiMuaDonHang 
 on ChiTietDonDatHang after insert as
 begin
 	declare @IDMH int
@@ -404,6 +502,7 @@ begin
 	if(@soluongmua <= 0) begin
 		raiserror ('So luong phai lon hon 0',16,1)
 		rollback
+		return 
 	end
 	declare @soluonghienco int
 	select @soluonghienco = SoLuong from MatHang where IDMH = @IDMH 
@@ -411,31 +510,92 @@ begin
 	begin	
 		raiserror ('So luong hien co phai lon hon so luong mua',16,1)
 		rollback
+		return
 	end
 	update MatHang set SoLuong = SoLuong - @soluongmua where IDMH = @IDMH
 end
 
-select * from TrangThai
-
 ---------------------------------------------------------------
----- KẾT THÚC KHU VUC DANH CHO CHI TIẾT ĐƠN ĐẶT HÀNG ----------
+------KẾT THÚC KHU VỰC DÀNH CHO CHI TIẾT ĐƠN ĐẶT HÀNG ---------
 ---------------------------------------------------------------
 
 ---------------------------------------------------------------
 ------------ KHU VUC DÀNH CHO THỐNG KÊ-------------------------
 ---------------------------------------------------------------
+-- thống kê doanh thu theo sản phẩm
 go
-create proc ThongKeTheoDoanhThuTheoSanPham @NgayBatDau date, @NgayKetThuc date
+create proc sp_ThongKeTheoDoanhThuTheoSanPham @NgayBatDau date, @NgayKetThuc date
 as
 begin		
- select * from MatHang where IDMH =(select ct.IDMH from ChiTietDonDatHang ct inner join DonDatHang dh on ct.IDDDH = dh.IDDDH where NgayThanhToan between @NgayBatDau and @NgayKetThuc)
+	if((@NgayBatDau is null or @NgayBatDau = '') and (@NgayKetThuc is null or @NgayKetThuc = ''))
+	begin 
+		select * from MatHang where IDMH in (select ct.IDMH from ChiTietDonDatHang ct inner join DonDatHang dh on ct.IDDDH = dh.IDDDH )
+		return
+	end
+	if(@NgayBatDau is null or @NgayBatDau = '')
+	begin
+		select * from MatHang where IDMH in (select ct.IDMH from ChiTietDonDatHang ct inner join DonDatHang dh on ct.IDDDH = dh.IDDDH where NgayThanhToan between @NgayKetThuc and GETDATE())
+		return
+	end
+	else if(@NgayKetThuc is null or @NgayKetThuc = '')
+	begin
+		select * from MatHang where IDMH in (select ct.IDMH from ChiTietDonDatHang ct inner join DonDatHang dh on ct.IDDDH = dh.IDDDH where NgayThanhToan between @NgayBatDau and GETDATE())
+		return
+	end 
+	else
+ select * from MatHang where IDMH in (select ct.IDMH from ChiTietDonDatHang ct inner join DonDatHang dh on ct.IDDDH = dh.IDDDH where NgayThanhToan between @NgayBatDau and @NgayKetThuc)
+end
+
+
+-- Liệt kê đơn đặt hàng theo ngày tháng năm
+go
+create proc sp_LietKeDonDatHangTheoNgay @NgayBatDau date, @NgayKetThuc date, @IDPhuongThucThanhToan int
+as
+begin 
+	if(@IDPhuongThucThanhToan is null or @IDPhuongThucThanhToan = '' or @IDPhuongThucThanhToan = 8)
+	begin
+		if((@NgayBatDau is null or @NgayBatDau = '') and (@NgayKetThuc is null or @NgayKetThuc = ''))
+		begin
+			select * from DonDatHang 
+			return
+		end
+		if(@NgayBatDau is null or @NgayBatDau = '')
+		begin
+			select * from DonDatHang where NgayThanhToan between @NgayKetThuc and GETDATE()
+			return
+		end
+		else if(@NgayKetThuc is null or @NgayKetThuc = '')
+		begin
+			select * from DonDatHang where NgayThanhToan between @NgayBatDau and GETDATE()
+			return
+		end else
+		select * from DonDatHang where NgayThanhToan between @NgayBatDau and @NgayKetThuc
+	end
+	else
+	begin
+		if((@NgayBatDau is null or @NgayBatDau = '') and (@NgayKetThuc is null or @NgayKetThuc = ''))
+		begin
+			select * from DonDatHang where IDPT = @IDPhuongThucThanhToan
+			return
+		end
+		if(@NgayBatDau is null or @NgayBatDau = '')
+		begin
+			select * from DonDatHang where IDPT = @IDPhuongThucThanhToan and NgayThanhToan between @NgayKetThuc and GETDATE() 
+			return
+		end
+		else if(@NgayKetThuc is null or @NgayKetThuc = '')
+		begin
+			select * from DonDatHang where IDPT = @IDPhuongThucThanhToan and NgayThanhToan between @NgayBatDau and GETDATE()
+			return
+		end else
+		select * from DonDatHang where IDPT = @IDPhuongThucThanhToan and NgayThanhToan between @NgayBatDau and @NgayKetThuc
+	end
 end
 
 
 ---------------------------------------------------------------
 -------------- KẾT THÚC KHU VUC DÀNH CHO THỐNG KÊ -------------
 ---------------------------------------------------------------
-
 
 select * from DonDatHang
 select * from LoaiMatHang
@@ -446,10 +606,17 @@ select * from ChiTietDonDatHang
 select * from TrangThai
 select * from MatHang
 --update DonDatHang set IDTrangThai =4 
---update ChiTietDonDatHang set DanhGiaSanPham = null
+--update ChiTietDonDatHang set DanhGiaSanPham is null
 
 select * from DonDatHang
 select * from ChiTietDonDatHang
-
+delete DonDatHang
+delete ChiTietDonDatHang
 select * from MatHang
 --delete MatHang where IDMH = 5
+update KhachHang set DiemTichLuyConLai = 30000 where IDKH = 63
+
+delete MatHang where idmh =3
+	delete ChiTietDonDatHang where IDDDH = 31
+	delete DonDatHang where IDDDH = 31
+select * from DonDatHang

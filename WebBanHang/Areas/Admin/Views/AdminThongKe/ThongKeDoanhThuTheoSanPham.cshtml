@@ -22,14 +22,14 @@
                             <input type="date" class="form-control" placeholder="Ngày kết thúc" name="NgayKetThuc" style="width: 300px">
                         </div>
                         <br />
-                        <button type="submit" class="btn btn-primary btn-fw" style="margin-top:20px">tìm kiếm</button>
+                        <button type="submit" class="btn btn-primary btn-fw" style="margin-top:20px">Tìm kiếm</button>
                     </div>
                 </form>
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th style="color:white">
-                                Tên khách hàng
+                                Tên hàng hóa
                             </th>
                             <th style="color:white">
                                 Số lượng hàng hóa đã mua
@@ -60,6 +60,14 @@
                                 </td>
                             </tr>
                         }
+
+                    <tr>
+                        <td></td>
+                        <td>Tổng hàng hóa bán được: @ViewBag.TongHangHoa </td>
+
+                        <td class="money">Tổng tiền: @ViewBag.TongThuNhap VND</td>
+                        <td class="money">Tổng tiền: @ViewBag.TongThuNhap VND</td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

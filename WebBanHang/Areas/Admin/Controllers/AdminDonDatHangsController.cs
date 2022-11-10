@@ -68,36 +68,7 @@ namespace WebBanHang.Areas.Admin.Controllers
             }
             return View(donDatHang);
         }
-
-        // GET: Admin/AdminDonDatHangs/Create
-        public ActionResult Create()
-        {
-            ViewBag.IDKH = new SelectList(db.KhachHangs, "IDKH", "TenKH");
-            ViewBag.IDPT = new SelectList(db.PhuongThucThanhToans, "IDPT", "TenPT");
-            ViewBag.IDTrangThai = new SelectList(db.TrangThais, "IDTrangThai", "TenTrangThai");
-            return View();
-        }
-
-        // POST: Admin/AdminDonDatHangs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(DonDatHang donDatHang)
-        {
-            if (ModelState.IsValid)
-            {
-                db.DonDatHangs.Add(donDatHang);                
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            Session["DonDatHangCho"] = db.DonDatHangs.Where(c => c.TrangThai.TenTrangThai.Equals("Chờ duyệt đơn hàng")).Count();
-            ViewBag.IDKH = new SelectList(db.KhachHangs, "IDKH", "TenKH", donDatHang.IDKH);
-            ViewBag.IDPT = new SelectList(db.PhuongThucThanhToans, "IDPT", "TenPT", donDatHang.IDPT);
-            ViewBag.IDTrangThai = new SelectList(db.TrangThais, "IDTrangThai", "TenTrangThai", donDatHang.IDTrangThai);
-            return View(donDatHang);
-        }
-
+        
         // GET: Admin/AdminDonDatHangs/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -114,6 +85,7 @@ namespace WebBanHang.Areas.Admin.Controllers
             ViewBag.IDKH = new SelectList(db.KhachHangs, "IDKH", "TenKH", donDatHang.IDKH);
             ViewBag.IDPT = new SelectList(db.PhuongThucThanhToans, "IDPT", "TenPT", donDatHang.IDPT);
             ViewBag.IDTrangThai = new SelectList(db.TrangThais, "IDTrangThai", "TenTrangThai", donDatHang.IDTrangThai);
+            ViewBag.IDNhanVien = new SelectList(db.NhanViens, "IDNhanVien", "TenNhanVien", donDatHang.IDTrangThai);
             Session["TrangThai"] = donDatHang.IDTrangThai;
             return View(donDatHang);
         }
@@ -123,42 +95,47 @@ namespace WebBanHang.Areas.Admin.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit( DonDatHang donDatHang)
+        public ActionResult Edit(DonDatHang donDatHang)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(donDatHang).State = EntityState.Modified;
                 db.SaveChanges();
-                if ((int)Session["TrangThai"] == 1 && donDatHang.IDTrangThai != 1)
+                int temp = (int)Session["TrangThai"];
+                if ((temp == 1 || temp == 2 || temp == 3 || temp == 5) && (donDatHang.IDTrangThai == 6))
                 {
                     List<ChiTietDonDatHang> cthd = db.ChiTietDonDatHangs.Where(c => c.IDDDH == donDatHang.IDDDH).ToList();
                     foreach (ChiTietDonDatHang item in cthd)
                     {
                         MatHang mh = db.MatHangs.FirstOrDefault(c => c.IDMH == item.IDMH);
-                        mh.SoLuong = mh.SoLuong - item.SoluongMH;
+                        mh.SoLuong = mh.SoLuong + item.SoluongMH;
+                        db.SaveChanges();
 
                     }
                 }
                 else
                 {
-                    if ((int)Session["TrangThai"] != 1 && donDatHang.IDTrangThai == 1)
+                    if ((int)Session["TrangThai"] == 6 && donDatHang.IDTrangThai != 1)
                     {
                         List<ChiTietDonDatHang> cthd = db.ChiTietDonDatHangs.Where(c => c.IDDDH == donDatHang.IDDDH).ToList();
                         foreach (ChiTietDonDatHang item in cthd)
                         {
                             MatHang mh = db.MatHangs.FirstOrDefault(c => c.IDMH == item.IDMH);
-                            mh.SoLuong = mh.SoLuong + item.SoluongMH;
-
+                            mh.SoLuong = mh.SoLuong - item.SoluongMH;
+                            db.SaveChanges();
                         }
                     }
                 }
-                db.SaveChanges();
+
+
+
                 return RedirectToAction("Index");
             }
             Session["DonDatHangCho"] = db.DonDatHangs.Where(c => c.TrangThai.TenTrangThai.Equals("Chờ duyệt đơn hàng")).Count();
             ViewBag.IDKH = new SelectList(db.KhachHangs, "IDKH", "TenKH", donDatHang.IDKH);
             ViewBag.IDPT = new SelectList(db.PhuongThucThanhToans, "IDPT", "TenPT", donDatHang.IDPT);
             ViewBag.IDTrangThai = new SelectList(db.TrangThais, "IDTrangThai", "TenTrangThai", donDatHang.IDTrangThai);
+            ViewBag.IDNhanVien = new SelectList(db.NhanViens, "IDNhanVien", "TenNhanVien", donDatHang.IDTrangThai);
             return View(donDatHang);
         }
 
@@ -183,9 +160,12 @@ namespace WebBanHang.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            DonDatHang donDatHang = db.DonDatHangs.Find(id);
+            db.sp_XoaDonDatHangADMIN(id);
+
+           /* DonDatHang donDatHang = db.DonDatHangs.Find(id);
             db.DonDatHangs.Remove(donDatHang);
-            db.SaveChanges();
+            db.SaveChanges();*/
+
             return RedirectToAction("Index");
         }
 

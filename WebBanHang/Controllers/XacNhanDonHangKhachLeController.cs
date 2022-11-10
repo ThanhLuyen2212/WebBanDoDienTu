@@ -43,7 +43,7 @@ namespace WebBanHang.Controllers
         public ActionResult XacNhan(DonDatHang donDatHang)
         {
             try
-            {
+            {                
                 var checkbox = Request.Form.Get("TrangThaiThanhToan");
                 if (checkbox != null)
                 {
@@ -53,20 +53,23 @@ namespace WebBanHang.Controllers
                 else
                 {
                     donDatHang.TrangThaiThanhToan = false;
-                }               
-                    data.Entry(donDatHang).State = System.Data.Entity.EntityState.Modified;
-                    DonDatHang donDatHang1 = (DonDatHang)Session["DonDatHang"];
-                    
-                    donDatHang.IDTrangThai = 1;
-                    donDatHang.TongSoluong = donDatHang1.TongSoluong;
-                    donDatHang.TongTien = donDatHang1.TongTien;
-                    donDatHang.NgayMua = DateTime.Now;
+                    donDatHang.IDPT = 8;
+                }                              
 
-                    data.SaveChanges();
-                    Session.Remove("DonDatHang");
-                    Session.Remove("GioHang");
-                    Session.Remove("SoLuongHangTrongGioHang");
-                    return RedirectToAction("MuaThanhCong", "ThongBao");                
+
+                data.Entry(donDatHang).State = System.Data.Entity.EntityState.Modified;
+                DonDatHang donDatHang1 = (DonDatHang)Session["DonDatHang"];
+
+                donDatHang.IDTrangThai = 1;
+                donDatHang.TongSoluong = donDatHang1.TongSoluong;
+                donDatHang.TongTien = donDatHang1.TongTien;
+                donDatHang.NgayMua = DateTime.Now;
+
+                data.SaveChanges();
+                Session.Remove("DonDatHang");
+                Session.Remove("GioHang");
+                Session.Remove("SoLuongHangTrongGioHang");
+                return RedirectToAction("MuaThanhCong", "ThongBao");                
             }
             catch
             {

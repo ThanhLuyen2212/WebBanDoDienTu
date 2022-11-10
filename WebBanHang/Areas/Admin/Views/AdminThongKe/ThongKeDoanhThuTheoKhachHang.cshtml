@@ -44,15 +44,27 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.SoLuongHangHoaDaMua)
                                 </td>
-                                <td >
-                                    <div class="money"> @item.SoTienThuVeTuKhachHang VND</div> 
+                                <td>
+                                    <div class="money"> @item.SoTienThuVeTuKhachHang VND</div>
                                 </td>
                                 <td>
                                     <div class="money">@Html.DisplayFor(modelItem => item.DoanhThuChoKhachHang) VND </div>
-                                </td>                              
+                                </td>
 
                             </tr>
                         }
+                    <tr>
+                        <td></td>
+                        <td>Tổng khách hàng: @ViewBag.TongKhachHang</td>
+                        <td>Tổng hàng hóa: @ViewBag.TongHangHoa</td>
+                        <td>Tổng thu nhập nhận: @ViewBag.TongThuNhap</td>
+
+                    </tr>
+
+                        
+                        
+                        
+
                     </tbody>
                 </table>
             </div>

@@ -18,7 +18,7 @@ namespace WebBanHang.Areas.Admin.Controllers
         }
 
         // thống kê doanh thu theo khách hàng
-        public ActionResult ThongKeDoanhThuTheoKhachHang()
+        public ActionResult ThongKeDoanhThuTheoKhachHang(DateTime? NgayBatDau, DateTime? NgayKetThuc)
         {
 
             if (Session["Admin"] == null)
@@ -27,8 +27,10 @@ namespace WebBanHang.Areas.Admin.Controllers
             }
 
             List<KhachHang> khachHangList = data.KhachHangs.ToList();
-            List<ThongKeTheoKhachHang> listThongKe = new List<ThongKeTheoKhachHang>();           
-            
+            List<ThongKeTheoKhachHang> listThongKe = new List<ThongKeTheoKhachHang>();
+            int TongKhachhang = 0;
+            int TongHangHoa = 0;
+            int TongThuNhap = 0;
             foreach (var item in khachHangList)
             {
                 if (data.DonDatHangs.FirstOrDefault(c => c.IDKH == item.IDKH) == null) continue;
@@ -38,10 +40,14 @@ namespace WebBanHang.Areas.Admin.Controllers
                 tk.SoTienThuVeTuKhachHang = int.Parse(data.DonDatHangs.Where(c => c.IDKH == item.IDKH).Sum(c => c.TongTien).ToString());
                 tk.DoanhThuChoKhachHang = int.Parse(data.DonDatHangs.Where(c => c.IDKH == item.IDKH).Sum(c => c.TongTien).ToString());
                 listThongKe.Add(tk);
+                TongKhachhang += 1;
+                TongHangHoa += tk.SoLuongHangHoaDaMua;
+                TongThuNhap += tk.SoTienThuVeTuKhachHang;
             }
-             
-            return View(listThongKe);           
-           
+            ViewBag.TongThuNhap = TongThuNhap;
+            ViewBag.TongHangHoa = TongHangHoa;
+            ViewBag.TongKhachHang = TongKhachhang;
+            return View(listThongKe);
         }
 
         // Thống kê doang thu theo sản phẩm
@@ -51,29 +57,73 @@ namespace WebBanHang.Areas.Admin.Controllers
             {
                 return RedirectToAction("Index", "AdminLogin");
             }
+            List<MatHang> matHangs = new List<MatHang>();            
+                matHangs = data.sp_ThongKeTheoDoanhThuTheoSanPham(NgayBatDau, NgayKetThuc).ToList();            
+            
+            List<ThongKeTheoSanPham> listThongKe = new List<ThongKeTheoSanPham>();
+            int TongHangHoa = 0;
+            int TongThuNhap = 0;
+            foreach (var item in matHangs)
+            {
+                if (matHangs == null) continue;                
 
+                ThongKeTheoSanPham sp = new ThongKeTheoSanPham();                
 
-            /* List<MatHang> matHangs = data.ThongKeTheoDoanhThuTheoSanPham(NgayBatDau, NgayKetThuc).ToList();
-             List<ThongKeTheoSanPham> listThongKe = new List<ThongKeTheoSanPham>();
-             foreach (var item in matHangs)
-             {
-                 if (matHangs == null) continue;
-                 ThongKeTheoSanPham sp = new ThongKeTheoSanPham();
+                sp.TenSanPham = item.TenMH;
 
-                 List<MatHang> mh = data.MatHangs.Where(s => s.IDMH == item.IDMH).ToList();
+                sp.SoLuongHangHoaBanDuoc = int.Parse(data.ChiTietDonDatHangs.Where(c => c.IDMH == item.IDMH).Sum(c => c.SoluongMH).ToString());                
+                    
+                TongHangHoa += sp.SoLuongHangHoaBanDuoc;
 
-                 int tmp = int.Parse(data.ChiTietDonDatHangs.Where(c => c.IDMH == item.IDMH ).Sum(c => c.SoluongMH).ToString());
+                sp.SoTienHangHoaThuVe = (int)(item.DonGia * sp.SoLuongHangHoaBanDuoc);
 
-                 sp.SoLuongHangHoaBanDuoc = int.Parse(data.ChiTietDonDatHangs.Where(c => c.IDMH == item.IDMH).Sum(c => c.SoluongMH).ToString());      
+                TongThuNhap += sp.SoTienHangHoaThuVe;
 
-                 sp.SoTienHangHoaThuVe = (int)(mh[0].DonGia * tmp);
+                sp.DoanhThuChoHangHoa = sp.SoTienHangHoaThuVe;                
 
-                 sp.DoanhThuChoHangHoa = sp.SoTienHangHoaThuVe;
+                listThongKe.Add(sp);
+            }
 
-                 listThongKe.Add(sp);
-             }
+            ViewBag.TongThuNhap = TongThuNhap;
+            ViewBag.TongHangHoa = TongHangHoa;            
 
-             return View(listThongKe);*/
+            return View(listThongKe);
+            /*return View();*/
+        }
+        public ActionResult ThongKeDoanhThu()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ThongKeDoanhThu(FormCollection form)
+        {
+            /*if (form["NgayBatDau"] == null || form["NgayKetThuc"] == null || form["PhuongThucTT"] == null)
+                return View();*/
+            string NgayBatDau1 = form["NgayBatDau"];
+            string NgayKetThuc1 = form["NgayKetThuc"];
+            int PhuongThucThanhToan = int.Parse(form["PhuongThucTT"]);
+            
+
+            DateTime NgayBatDau = new DateTime(int.Parse(NgayBatDau1.Split('-')[0]), int.Parse(NgayBatDau1.Split('-')[1]), int.Parse(NgayBatDau1.Split('-')[2]));
+            DateTime NgayKetThuc = new DateTime(int.Parse(NgayKetThuc1.Split('-')[0]), int.Parse(NgayKetThuc1.Split('-')[1]), int.Parse(NgayKetThuc1.Split('-')[2]));
+
+            List<DonDatHang> donDatHangs = data.sp_LietKeDonDatHangTheoNgay(NgayBatDau, NgayKetThuc,PhuongThucThanhToan).ToList();
+
+            int TongMatHang = 0;
+            int TongThuNhap = 0;
+
+            foreach (DonDatHang item in donDatHangs)
+            {
+                TongMatHang += item.TongSoluong.Value;
+                TongThuNhap += item.TongTien.Value;
+            }
+
+            ViewBag.TongMatHang = TongMatHang;
+
+            ViewBag.TongThuNhap = TongThuNhap;
+
             return View();
         }
     }

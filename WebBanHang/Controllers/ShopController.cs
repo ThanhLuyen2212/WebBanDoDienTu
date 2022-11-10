@@ -19,25 +19,25 @@ namespace WebBanHang.Controllers
             ViewBag.Category = data.LoaiMatHangs.ToList();
             if (TenTheLoai != null)
             {
-                ViewBag.MatHangTheoTheLoai = data.MatHangs.Where(c => c.LoaiMatHang.TenLoaiMH.ToLower().Contains(TenTheLoai.ToLower()));
+                ViewBag.MatHangTheoTheLoai = data.MatHangs.Where(c => c.LoaiMatHang.TenLoaiMH.ToLower().Contains(TenTheLoai.ToLower())).Where(c => c.SoLuong > 0);
             }
             else
            if (idLoaiMH != null)
             {
                 int a = int.Parse(idLoaiMH.ToString());
                 /*ViewBag.MatHangTheoTheLoai = data.MatHangs.Where(c => c.IDLoaiMH == a).ToList();*/
-                return View(data.MatHangs.Where(c => c.IDLoaiMH == a).ToList().OrderByDescending(c => c.IDMH).ToPagedList(page, pagelist));
+                return View(data.MatHangs.Where(c => c.IDLoaiMH == a && c.SoLuong > 0).ToList().OrderByDescending(c => c.IDMH).ToPagedList(page, pagelist));
             }
             else
            if (TenMatHang != null)
             {
-                return View(data.MatHangs.Where(c => c.TenMH.ToLower().Contains(TenMatHang.ToLower())).OrderByDescending(c => c.IDMH).ToPagedList(page, pagelist));
+                return View(data.MatHangs.Where(c => c.TenMH.ToLower().Contains(TenMatHang.ToLower()) && c.SoLuong > 0).OrderByDescending(c => c.IDMH).ToPagedList(page, pagelist));
             }
             else
             {                
-                return View(data.MatHangs.OrderByDescending(x => x.IDLoaiMH).ToPagedList(page, pagelist));
+                return View(data.MatHangs.Where(c => c.SoLuong > 0).OrderByDescending(x => x.IDLoaiMH).ToPagedList(page, pagelist));
             }
-            return View(data.MatHangs.OrderByDescending(x => x.IDLoaiMH).ToPagedList(page, pagelist));
+            return View(data.MatHangs.Where(c => c.SoLuong > 0).OrderByDescending(x => x.IDLoaiMH).ToPagedList(page, pagelist));
 
         }
 

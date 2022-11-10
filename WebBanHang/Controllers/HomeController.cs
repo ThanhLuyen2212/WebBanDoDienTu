@@ -13,9 +13,9 @@ namespace WebBanHang.Controllers
         public ActionResult Index()
         {
 
-            ViewBag.banner = data.MatHangs.Take(3).OrderByDescending(x => x.NgayNhapHang).ToList();
+            ViewBag.banner = data.MatHangs.Where(c => c.SoLuong > 0).Take(3).OrderByDescending(x => x.NgayNhapHang).ToList();
 
-            ViewBag.newProduct = data.MatHangs.Take(8).OrderByDescending(x => x.NgayNhapHang).ToList();
+            ViewBag.newProduct = data.MatHangs.Where(c => c.SoLuong > 0).Take(8).OrderByDescending(x => x.NgayNhapHang).ToList();
 
             // lấy danh sách mặt hàng có nhiều hóa đơn nhất
             List<BestSeller> bestSellerList = new List<BestSeller>();
@@ -31,11 +31,10 @@ namespace WebBanHang.Controllers
             {
                 ListMatHang.Add(item.matHang);
             }
-            ViewBag.bestSeller = ListMatHang.Take(8);
+            ViewBag.bestSeller = ListMatHang.Where(c => c.SoLuong > 0).Take(8);
             // kết thúc lấy 8 sản phẩm bán chạy nhất
 
-            return View(data.MatHangs.ToList());
-            
+            return View(data.MatHangs.Where(c => c.SoLuong > 0).ToList());
         }        
     }
 

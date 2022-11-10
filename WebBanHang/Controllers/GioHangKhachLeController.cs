@@ -108,12 +108,7 @@ namespace WebBanHang.Controllers
             try
             {
                 DonDatHang hoadon = new DonDatHang();
-                /*if (Session["UserName"] == null)
-                {
-                    return RedirectToAction("Index", "Login");
-                }
-                KhachHang khach = (KhachHang)Session["KhachHang"];
-                hoadon.IDKH = khach.IDKH;*/
+               
                 data.DonDatHangs.Add(hoadon);
                 data.SaveChanges();
 

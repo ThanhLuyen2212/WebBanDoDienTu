@@ -8,12 +8,7 @@
 <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
-            <h2 class="card-title">Danh sách đơn đặt hàng</h2>
-
-            <a href="~/Admin/AdminDonDatHangs/Create">
-                <button type="button" class="btn btn-primary btn-fw">Tạo một hóa đơn mới</button>
-            </a>
-
+            <h2 class="card-title">Danh sách đơn đặt hàng</h2>        
 
             <h4 style="margin-top:30px">Tìm kiếm đơn đặt hàng</h4>
             <form>
@@ -62,6 +57,9 @@
                                 Ngày mua
                             </th>
                             <th style="color:white">
+                                Ngày thanh toán
+                            </th>
+                            <th style="color:white">
                                 Trạng thái
                             </th>
                             <th></th>
@@ -91,6 +89,9 @@
                                     @Html.DisplayFor(modelItem => item.NgayMua)
                                 </td>
                                 <td>
+                                    @Html.DisplayFor(modelItem => item.NgayThanhToan)
+                                </td>
+                                <td>
                                     @Html.DisplayFor(modelItem => item.TrangThai.TenTrangThai)
                                 </td>
 
@@ -100,10 +101,7 @@
                                     </a>
                                     <a href="~/Admin/AdminDonDatHangs/Edit/@item.IDDDH">
                                         <button style="min-width:50px" type="button" class="btn btn-outline-warning btn-fw">Edit</button>
-                                    </a>
-                                    <a href="~/Admin/AdminDonDatHangs/Delete/@item.IDDDH">
-                                        <button style="min-width:50px" type="button" class="btn btn-outline-danger btn-fw">Delete</button>
-                                    </a>
+                                    </a>                                   
                                     <a href="/Admin/AdminChiTietDonDatHangs/Index/?IDDDH=@item.IDDDH">
                                         <button style="min-width:50px" type="button" class="btn btn-outline-light btn-fw">Chi tiết các sản phẩm</button>
                                     </a>

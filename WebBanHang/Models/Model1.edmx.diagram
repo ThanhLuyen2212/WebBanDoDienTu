@@ -19,6 +19,9 @@
         <AssociationConnector Association="WebBanDoDienTuModel.FK_DONDATHANG_PHUONGTHUC" ManuallyRouted="false" />
         <AssociationConnector Association="WebBanDoDienTuModel.FK_DONDATHANG_TRANGTHAI" ManuallyRouted="false" />
         <AssociationConnector Association="WebBanDoDienTuModel.FK_MATHANG_LOAIMATHANG" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="WebBanDoDienTuModel.MaGiamGia" Width="1.5" PointX="8.375" PointY="0.75" />
+        <EntityTypeShape EntityType="WebBanDoDienTuModel.NhanVien" Width="1.5" PointX="8.375" PointY="4" />
+        <AssociationConnector Association="WebBanDoDienTuModel.FK_DONDATHANG_NHANVIEN" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

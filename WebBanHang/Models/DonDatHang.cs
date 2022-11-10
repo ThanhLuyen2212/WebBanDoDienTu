@@ -33,11 +33,13 @@ namespace WebBanHang.Models
         public string GhiChu { get; set; }
         public string TenKHKhongAccount { get; set; }
         public string DienThoaiKhongAccount { get; set; }
+        public Nullable<int> IDNhanVien { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ChiTietDonDatHang> ChiTietDonDatHangs { get; set; }
         public virtual KhachHang KhachHang { get; set; }
         public virtual PhuongThucThanhToan PhuongThucThanhToan { get; set; }
         public virtual TrangThai TrangThai { get; set; }
+        public virtual NhanVien NhanVien { get; set; }
     }
 }

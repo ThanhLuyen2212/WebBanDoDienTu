@@ -126,7 +126,7 @@ namespace WebBanHang.Controllers
                     return RedirectToAction("Index", "Login");
                 }
                 KhachHang khach = (KhachHang)Session["KhachHang"];
-                dondathang.IDKH = khach.IDKH;
+                dondathang.IDKH = khach.IDKH;                
                 data.DonDatHangs.Add(dondathang);
                 data.SaveChanges();
 

@@ -75,27 +75,21 @@ namespace WebBanHang.Controllers
 
         public ActionResult HuyDonHang(FormCollection form)
         {
-            if (Session["KhachHang"] != null)
+            
+            int id = int.Parse(form["ID DonDatHang"].ToString());
+            if (id == null)
             {
-                int id = int.Parse(form["ID DonDatHang"].ToString());
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                DonDatHang donDatHang = data.DonDatHangs.FirstOrDefault(c => c.IDDDH == id);
-                if (donDatHang == null)
-                {
-                    return HttpNotFound();
-                }
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            DonDatHang donDatHang = data.DonDatHangs.FirstOrDefault(c => c.IDDDH == id);
+            if (donDatHang == null)
+            {
+                return HttpNotFound();
+            }
 
-                data.sp_XoaDonDatHangChuaDuyet(id);
+            data.sp_XoaDonDatHangChuaDuyet(id);
                 
-                return RedirectToAction("CacDonHangDangCho", "ThongBao");
-            }
-            else
-            {
-                return RedirectToAction("Index", "Login");
-            }
+            return RedirectToAction("CacDonHangDangCho", "ThongBao");           
 
         }
 
@@ -133,6 +127,26 @@ namespace WebBanHang.Controllers
             else BinhLuan = BinhLuan;
             data.sp_DanhGiaMatHangDaMua(int.Parse(IDChiTietDonDatHang), int.Parse(danhgia), BinhLuan);
             return RedirectToAction("TimKiemDonDatHang", "ThongBao");
+        }
+
+        public ActionResult HuyDonHangKhachLe(FormCollection form)
+        {
+
+            int id = int.Parse(form["ID DonDatHang"].ToString());
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            DonDatHang donDatHang = data.DonDatHangs.FirstOrDefault(c => c.IDDDH == id);
+            if (donDatHang == null)
+            {
+                return HttpNotFound();
+            }
+
+            data.sp_XoaDonDatHangChuaDuyet(id);
+
+            return RedirectToAction("TimKiemDonDatHang", "ThongBao");
+
         }
     }
 }
