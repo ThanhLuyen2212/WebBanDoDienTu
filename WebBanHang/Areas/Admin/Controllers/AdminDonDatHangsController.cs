@@ -13,37 +13,37 @@ namespace WebBanHang.Areas.Admin.Controllers
     public class AdminDonDatHangsController : Controller
     {
         private WebBanDoDienTuEntities db = new WebBanDoDienTuEntities();
-       
-        public ActionResult Index(string tenKH,string SDT, DateTime? NgayBatDau, DateTime? NgayKetThuc)
+
+        public ActionResult Index(string tenKH, string SDT, DateTime? NgayBatDau, DateTime? NgayKetThuc)
         {
 
             if (Session["Admin"] == null)
             {
                 return RedirectToAction("Index", "AdminLogin");
             }
-            if(tenKH != null && tenKH != "" && SDT != null && SDT != "")
+            if (tenKH != null && tenKH != "" && SDT != null && SDT != "")
             {
                 var ketqua = db.DonDatHangs.Where(s => s.KhachHang.SDT.Contains(SDT)).Where(s => s.KhachHang.TenKH.Contains(tenKH.ToLower())).ToList();
                 var ketqua1 = db.DonDatHangs.Where(s => s.DienThoaiKhongAccount.Contains(SDT)).Where(s => s.TenKHKhongAccount.Contains(tenKH.ToLower())).ToList();
-                
+
                 return View(ketqua.Concat(ketqua1));
             }
-            if(tenKH != null && tenKH != "")
+            if (tenKH != null && tenKH != "")
             {
                 Session["DonDatHangCho"] = db.DonDatHangs.Where(c => c.TrangThai.TenTrangThai.Equals("Chờ duyệt đơn hàng")).Count();
                 var donDatHangs = db.DonDatHangs.Where(s => s.TenKHKhongAccount.Contains(tenKH.ToLower())).ToList();
                 var donDatHangs1 = db.DonDatHangs.Where(s => s.KhachHang.TenKH.Contains(tenKH.ToLower())).ToList();
                 return View(donDatHangs.Concat(donDatHangs1));
             }
-            if(SDT != null && SDT != "")
+            if (SDT != null && SDT != "")
             {
                 return View(db.DonDatHangs.Where(s => s.KhachHang.SDT == SDT).Include(s => s.DienThoaiKhongAccount == SDT).ToList());
             }
-            else if(NgayBatDau != null && NgayKetThuc != null)
+            else if (NgayBatDau != null && NgayKetThuc != null)
             {
                 return View(db.sp_TimKiemDonDatHang(NgayBatDau, NgayKetThuc).ToList());
             }
-            else if(NgayBatDau != null && NgayKetThuc == null)
+            else if (NgayBatDau != null && NgayKetThuc == null)
             {
                 return View(db.DonDatHangs.Where(x => x.NgayMua == NgayBatDau).ToList());
             }
@@ -51,7 +51,7 @@ namespace WebBanHang.Areas.Admin.Controllers
             {
                 return View(db.DonDatHangs.Where(x => x.NgayMua == NgayKetThuc).ToList());
             }
-            return View(db.DonDatHangs.ToList());            
+            return View(db.DonDatHangs.ToList());
         }
 
         // GET: Admin/AdminDonDatHangs/Details/5
@@ -68,7 +68,7 @@ namespace WebBanHang.Areas.Admin.Controllers
             }
             return View(donDatHang);
         }
-        
+
         // GET: Admin/AdminDonDatHangs/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -102,26 +102,27 @@ namespace WebBanHang.Areas.Admin.Controllers
                 db.Entry(donDatHang).State = EntityState.Modified;
                 db.SaveChanges();
                 int temp = (int)Session["TrangThai"];
-                if ((temp == 1 || temp == 2 || temp == 3 || temp == 5) && (donDatHang.IDTrangThai == 6))
+                if ((temp == 1 || temp == 2 || temp == 3 || temp == 4 || temp == 5) && (donDatHang.IDTrangThai == 6))
                 {
                     List<ChiTietDonDatHang> cthd = db.ChiTietDonDatHangs.Where(c => c.IDDDH == donDatHang.IDDDH).ToList();
                     foreach (ChiTietDonDatHang item in cthd)
                     {
                         MatHang mh = db.MatHangs.FirstOrDefault(c => c.IDMH == item.IDMH);
                         mh.SoLuong = mh.SoLuong + item.SoluongMH;
+                        db.Entry(mh).State = EntityState.Modified;
                         db.SaveChanges();
-
                     }
                 }
                 else
                 {
-                    if ((int)Session["TrangThai"] == 6 && donDatHang.IDTrangThai != 1)
+                    if ((int)Session["TrangThai"] == 6 && donDatHang.IDTrangThai != 6)
                     {
                         List<ChiTietDonDatHang> cthd = db.ChiTietDonDatHangs.Where(c => c.IDDDH == donDatHang.IDDDH).ToList();
                         foreach (ChiTietDonDatHang item in cthd)
                         {
                             MatHang mh = db.MatHangs.FirstOrDefault(c => c.IDMH == item.IDMH);
                             mh.SoLuong = mh.SoLuong - item.SoluongMH;
+                            db.Entry(mh).State = EntityState.Modified;
                             db.SaveChanges();
                         }
                     }
@@ -162,9 +163,9 @@ namespace WebBanHang.Areas.Admin.Controllers
         {
             db.sp_XoaDonDatHangADMIN(id);
 
-           /* DonDatHang donDatHang = db.DonDatHangs.Find(id);
-            db.DonDatHangs.Remove(donDatHang);
-            db.SaveChanges();*/
+            /* DonDatHang donDatHang = db.DonDatHangs.Find(id);
+             db.DonDatHangs.Remove(donDatHang);
+             db.SaveChanges();*/
 
             return RedirectToAction("Index");
         }
@@ -178,7 +179,7 @@ namespace WebBanHang.Areas.Admin.Controllers
             base.Dispose(disposing);
         }
 
-        public ActionResult DuyetDonDatHang(string IDDDH,string tenKH,string SDT, DateTime? NgayBatDau, DateTime? NgayKetThuc)
+        public ActionResult DuyetDonDatHang(string IDDDH, string tenKH, string SDT, DateTime? NgayBatDau, DateTime? NgayKetThuc)
         {
             if (Session["Admin"] == null)
             {
@@ -217,7 +218,7 @@ namespace WebBanHang.Areas.Admin.Controllers
             return View(db.DonDatHangs.ToList());
         }
 
-        public ActionResult GiaoHangKhongThanhCong(string IDDDH,string tenKH,string SDT, DateTime? NgayBatDau, DateTime? NgayKetThuc)
+        public ActionResult GiaoHangKhongThanhCong(string IDDDH, string tenKH, string SDT, DateTime? NgayBatDau, DateTime? NgayKetThuc)
         {
             if (Session["Admin"] == null)
             {
@@ -253,10 +254,10 @@ namespace WebBanHang.Areas.Admin.Controllers
             {
                 return View(db.DonDatHangs.Where(x => x.NgayMua == NgayKetThuc).Where(s => s.IDTrangThai == 5).ToList());
             }
-            return View(db.DonDatHangs.Where(x => x.IDTrangThai ==5).ToList());
+            return View(db.DonDatHangs.Where(x => x.IDTrangThai == 5).ToList());
         }
 
-        public ActionResult GiaoHangThanhCong(string IDDDH,string tenKH,string SDT, DateTime? NgayBatDau, DateTime? NgayKetThuc)
+        public ActionResult GiaoHangThanhCong(string IDDDH, string tenKH, string SDT, DateTime? NgayBatDau, DateTime? NgayKetThuc)
         {
             if (Session["Admin"] == null)
             {
@@ -342,35 +343,74 @@ namespace WebBanHang.Areas.Admin.Controllers
             }
             if (tenKH != null && tenKH != "" && SDT != null && SDT != "")
             {
-                var ketqua = db.DonDatHangs.Where(s => s.KhachHang.SDT.Contains(SDT) && s.KhachHang.TenKH.Contains(tenKH.ToLower()) && s.IDTrangThai == 6).ToList();
-                var ketqua1 = db.DonDatHangs.Where(s => s.TenKHKhongAccount.Contains(tenKH.ToLower()) && s.IDTrangThai == 6 && s.DienThoaiKhongAccount.Contains(tenKH.ToLower())).ToList();
+                var ketqua = db.DonDatHangs.Where(s => s.KhachHang.SDT.Contains(SDT) && s.KhachHang.TenKH.Contains(tenKH.ToLower()) && s.IDTrangThai == 5).ToList();
+                var ketqua1 = db.DonDatHangs.Where(s => s.TenKHKhongAccount.Contains(tenKH.ToLower()) && s.IDTrangThai == 5 && s.DienThoaiKhongAccount.Contains(tenKH.ToLower())).ToList();
 
                 return View(ketqua.Concat(ketqua1));
             }
             if (tenKH != null && tenKH != "")
             {
                 Session["DonDatHangCho"] = db.DonDatHangs.Where(c => c.TrangThai.TenTrangThai.Equals("Chờ duyệt đơn hàng")).Count();
-                var donDatHangs = db.DonDatHangs.Where(s => s.TenKHKhongAccount.Contains(tenKH.ToLower()) && s.IDTrangThai == 6).ToList();
-                var donDatHangs1 = db.DonDatHangs.Where(s => s.KhachHang.TenKH.Contains(tenKH.ToLower()) && s.IDTrangThai == 6).ToList();
+                var donDatHangs = db.DonDatHangs.Where(s => s.TenKHKhongAccount.Contains(tenKH.ToLower()) && s.IDTrangThai == 5).ToList();
+                var donDatHangs1 = db.DonDatHangs.Where(s => s.KhachHang.TenKH.Contains(tenKH.ToLower()) && s.IDTrangThai == 5).ToList();
                 return View(donDatHangs.Concat(donDatHangs1));
             }
             if (SDT != null && SDT != "")
             {
-                return View(db.DonDatHangs.Where(s => s.KhachHang.SDT == SDT && s.IDTrangThai == 6).Include(s => s.DienThoaiKhongAccount == SDT).ToList());
+                return View(db.DonDatHangs.Where(s => s.KhachHang.SDT == SDT && s.IDTrangThai == 5).Include(s => s.DienThoaiKhongAccount == SDT).ToList());
             }
             else if (NgayBatDau != null && NgayKetThuc != null)
             {
-                return View(db.sp_TimKiemDonDatHang(NgayBatDau, NgayKetThuc).Where(s => s.IDTrangThai == 6).ToList());
+                return View(db.sp_TimKiemDonDatHang(NgayBatDau, NgayKetThuc).Where(s => s.IDTrangThai == 5).ToList());
             }
             else if (NgayBatDau != null && NgayKetThuc == null)
             {
-                return View(db.DonDatHangs.Where(x => x.NgayMua == NgayBatDau && x.IDTrangThai == 6).ToList());
+                return View(db.DonDatHangs.Where(x => x.NgayMua == NgayBatDau && x.IDTrangThai == 5).ToList());
             }
             else if (NgayBatDau == null && NgayKetThuc != null)
             {
-                return View(db.DonDatHangs.Where(x => x.NgayMua == NgayKetThuc && x.IDTrangThai == 6).ToList());
+                return View(db.DonDatHangs.Where(x => x.NgayMua == NgayKetThuc && x.IDTrangThai == 5).ToList());
             }
-            return View(db.DonDatHangs.Where(x => x.IDTrangThai == 6).ToList());
+            return View(db.DonDatHangs.Where(x => x.IDTrangThai == 5).ToList());
+        }
+
+        public ActionResult PhanCongGiaoHang(string IDDDH, string tenKH, string SDT, DateTime? NgayBatDau, DateTime? NgayKetThuc)
+        {
+            if (Session["Admin"] == null)
+            {
+                return RedirectToAction("Index", "AdminLogin");
+            }
+            if (tenKH != null && tenKH != "" && SDT != null && SDT != "")
+            {
+                var ketqua = db.DonDatHangs.Where(s => s.KhachHang.SDT.Contains(SDT) && s.KhachHang.TenKH.Contains(tenKH.ToLower()) && s.IDTrangThai == 3).ToList();
+                var ketqua1 = db.DonDatHangs.Where(s => s.TenKHKhongAccount.Contains(tenKH.ToLower()) && s.IDTrangThai == 3 && s.DienThoaiKhongAccount.Contains(tenKH.ToLower())).ToList();
+
+                return View(ketqua.Concat(ketqua1));
+            }
+            if (tenKH != null && tenKH != "")
+            {
+                Session["DonDatHangCho"] = db.DonDatHangs.Where(c => c.TrangThai.TenTrangThai.Equals("Chờ duyệt đơn hàng")).Count();
+                var donDatHangs = db.DonDatHangs.Where(s => s.TenKHKhongAccount.Contains(tenKH.ToLower()) && s.IDTrangThai == 3).ToList();
+                var donDatHangs1 = db.DonDatHangs.Where(s => s.KhachHang.TenKH.Contains(tenKH.ToLower()) && s.IDTrangThai == 3).ToList();
+                return View(donDatHangs.Concat(donDatHangs1));
+            }
+            if (SDT != null && SDT != "")
+            {
+                return View(db.DonDatHangs.Where(s => s.KhachHang.SDT == SDT && s.IDTrangThai == 3).Include(s => s.DienThoaiKhongAccount == SDT).ToList());
+            }
+            else if (NgayBatDau != null && NgayKetThuc != null)
+            {
+                return View(db.sp_TimKiemDonDatHang(NgayBatDau, NgayKetThuc).Where(s => s.IDTrangThai == 3).ToList());
+            }
+            else if (NgayBatDau != null && NgayKetThuc == null)
+            {
+                return View(db.DonDatHangs.Where(x => x.NgayMua == NgayBatDau && x.IDTrangThai == 3).ToList());
+            }
+            else if (NgayBatDau == null && NgayKetThuc != null)
+            {
+                return View(db.DonDatHangs.Where(x => x.NgayMua == NgayKetThuc && x.IDTrangThai == 3).ToList());
+            }
+            return View(db.DonDatHangs.Where(x => x.IDTrangThai == 3).ToList());
         }
     }
 }

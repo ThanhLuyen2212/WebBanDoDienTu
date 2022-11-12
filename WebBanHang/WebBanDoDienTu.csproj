@@ -1346,6 +1346,7 @@
     <Content Include="Areas\Admin\Views\AdminNhanVien\Details.cshtml" />
     <Content Include="Areas\Admin\Views\AdminNhanVien\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\AdminNhanVien\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminDonDatHangs\PhanCongGiaoHang.cshtml" />
     <None Include="Properties\PublishProfiles\IISProfile.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />

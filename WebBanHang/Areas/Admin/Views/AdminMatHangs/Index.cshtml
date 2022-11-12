@@ -64,6 +64,8 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.NgayNhapHang)
                             </td>
+                            @if (item.HinhAnh1 != null)
+                            {
                             <td>
                                 @{
                                     var base64 = Convert.ToBase64String(item.HinhAnh1);
@@ -71,6 +73,10 @@
                                 }
                                 <img src='@imgSrc' style="width: 150px; height: 150px; border-radius:0%" />
                             </td>
+                                    }else
+                {
+                                       <content>Không có hình ảnh</content>
+                }
                             <td>
                                 <a href="~/Admin/AdminMatHangs/Details/@item.IDMH">
                                     <button style="min-width:50px" type="button" class="btn btn-outline-success btn-fw">Details</button>

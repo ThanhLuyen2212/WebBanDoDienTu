@@ -290,7 +290,8 @@ begin
 	set DiemTichLuy = 0, DiemTichLuyConLai = 0, LoaiKhachHang = N'Bạc'
 end
 
-
+select * from DonDatHang
+select * from TrangThai
 go
 -- Tạo một khách hàng mới
 -- tạm thời không dùng
@@ -620,3 +621,6 @@ delete MatHang where idmh =3
 	delete ChiTietDonDatHang where IDDDH = 31
 	delete DonDatHang where IDDDH = 31
 select * from DonDatHang
+
+select * from LoaiMatHang
+select * from LoaiMatHang where TenLoaiMH = N'Bàn phím'

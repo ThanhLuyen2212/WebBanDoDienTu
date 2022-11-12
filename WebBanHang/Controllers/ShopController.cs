@@ -14,14 +14,9 @@ namespace WebBanHang.Controllers
         WebBanDoDienTuEntities data = new WebBanDoDienTuEntities();
         // GET: Shop
 
-        public ActionResult Index(string idLoaiMH, string TenTheLoai, string TenMatHang, int page = 1, int pagelist = 6)
+        public ActionResult Index(string idLoaiMH, string TenMatHang, int page = 1, int pagelist = 6)
         {
-            ViewBag.Category = data.LoaiMatHangs.ToList();
-            if (TenTheLoai != null)
-            {
-                ViewBag.MatHangTheoTheLoai = data.MatHangs.Where(c => c.LoaiMatHang.TenLoaiMH.ToLower().Contains(TenTheLoai.ToLower())).Where(c => c.SoLuong > 0);
-            }
-            else
+            ViewBag.Category = data.LoaiMatHangs.ToList();         
            if (idLoaiMH != null)
             {
                 int a = int.Parse(idLoaiMH.ToString());
