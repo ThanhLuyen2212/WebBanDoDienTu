@@ -125,6 +125,7 @@ go
 create table MaGiamGia(
 	IDMaGiamGia nvarchar(100) primary key,	
 	TenMaGiamGia nvarchar(100),
+
 	NgayBatDauGiamGia date,
 	NgayKetThucGiamGia date,
 	SoTienGiam int,
