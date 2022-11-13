@@ -50,32 +50,10 @@
                                         <button style="min-width:50px" type="button" class="btn btn-outline-success btn-fw">Details</button>
                                     </a>
 
-                                    <a href="#">
-                                        <button id="myBtn" type="button" class="btn btn-outline-danger btn-fw">Đánh giả sản phẩm</button>
+                                    <a href="~/Admin/AdminChiTietDonDatHangs/Details/@item.IDChiTietDDH">
+                                        <button id="myBtn" type="button" class="btn btn-outline-danger btn-fw"> Xem đánh giả sản phẩm</button>
                                     </a>
-
-                                    <input type="button" class="btn btn-outline-danger btn-fw" data-toggle="modal" data-target="#tips-@item.IDChiTietDDH" value="Đánh giá sản phẩm" />
-
-                                    <!-- The Modal -->
-
-                                    <div class="container" @*id="tips-@item.IDChiTietDDH" tabindex="-1" role="dialog" aria-labelledby="tipsLabel"*@>
-
-                                        @*<div class="container">*@
-                                            <div class="modal">
-                                                <!-- Nội dung form đăng nhập -->
-                                                <div class="modal-content">
-                                                    <form action="@item.IDChiTietDDH">
-                                                        <span class="close">&times;</span>
-                                                        <h2 style="color:black">Đánh giá sản phẩm</h2>
-                                                        <h3 style="color:black"> @item.DanhGiaSanPham <i class="mdi mdi-star-outline"></i></h3>
-                                                        <h3 style="color:black">Bình luận: @item.BinhLuan</h3>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        @*</div>*@
-                                    </div>
-                                    <!-- The Modal -->
-
+                                  
                                 </td>
                             </tr>
 

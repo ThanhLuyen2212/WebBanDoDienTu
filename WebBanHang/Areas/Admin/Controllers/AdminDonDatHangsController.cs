@@ -100,7 +100,7 @@ namespace WebBanHang.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(donDatHang).State = EntityState.Modified;
-                db.SaveChanges();
+                db.SaveChanges();                
                 int temp = (int)Session["TrangThai"];
                 if ((temp == 1 || temp == 2 || temp == 3 || temp == 4 || temp == 5) && (donDatHang.IDTrangThai == 6))
                 {
@@ -127,8 +127,6 @@ namespace WebBanHang.Areas.Admin.Controllers
                         }
                     }
                 }
-
-
 
                 return RedirectToAction("Index");
             }
