@@ -479,6 +479,8 @@ exec sp_TimKiemDonDatHang '2022/10/26',null
 	delete DonDatHang where IDDDH = @IDDDH
  end
 
+
+
 ---------------------------------------------------------------
 ----------KẾT THÚC KHU VỰC DÀNH CHO ĐƠN ĐẶT HÀNG --------------
 ---------------------------------------------------------------
@@ -595,6 +597,59 @@ begin
 end
 
 
+-- Thống kê doanh thu theo khách hàng
+go
+create proc sp_ThongKeDoanhThuTheoKhachHang @NgayBatDau date, @NgayKetThuc date
+as
+begin 
+	if((@NgayBatDau is null or @NgayBatDau = '') and (@NgayKetThuc is null or @NgayKetThuc = ''))
+	begin 
+		select * from KhachHang where IDKH in (select dh.IDKH from ChiTietDonDatHang ct inner join DonDatHang dh on ct.IDDDH = dh.IDDDH )
+		return
+	end
+	if(@NgayBatDau is null or @NgayBatDau = '')
+	begin
+		select * from KhachHang where IDKH in (select dh.IDKH from ChiTietDonDatHang ct inner join DonDatHang dh on ct.IDDDH = dh.IDDDH where NgayThanhToan between @NgayKetThuc and GETDATE())
+		return
+	end
+	else if(@NgayKetThuc is null or @NgayKetThuc = '')
+	begin
+		select * from KhachHang where IDKH in (select dh.IDKH from ChiTietDonDatHang ct inner join DonDatHang dh on ct.IDDDH = dh.IDDDH where NgayThanhToan between @NgayBatDau and GETDATE())
+		return
+	end 
+	else
+ select * from KhachHang where IDKH in (select dh.IDKH from ChiTietDonDatHang ct inner join DonDatHang dh on ct.IDDDH = dh.IDDDH where NgayThanhToan between @NgayBatDau and @NgayKetThuc)
+
+end
+
+
+
+-- thống kê doanh thu theo khách hàng khách lẽ
+go
+create proc sp_ThongKeTheoDoanhThuTheoKhachHangLe @NgayBatDau date, @NgayKetThuc date
+as
+begin		
+	if((@NgayBatDau is null or @NgayBatDau = '') and (@NgayKetThuc is null or @NgayKetThuc = ''))
+	begin 
+		select * from  DonDatHang where IDKH is null or IDKH = null 
+		return
+	end
+	if(@NgayBatDau is null or @NgayBatDau = '')
+	begin
+		select * from DonDatHang dh  where NgayThanhToan between @NgayKetThuc and GETDATE() and IDKH is null or IDKH = null 
+		return
+	end
+	else if(@NgayKetThuc is null or @NgayKetThuc = '')
+	begin
+		select * from DonDatHang where NgayThanhToan between @NgayBatDau and GETDATE() and IDKH is null or IDKH = null
+		return
+	end 
+	else
+ select * from DonDatHang dh where NgayThanhToan between @NgayBatDau and @NgayKetThuc and IDKH is null or IDKH = null
+end
+
+
+
 ---------------------------------------------------------------
 -------------- KẾT THÚC KHU VUC DÀNH CHO THỐNG KÊ -------------
 ---------------------------------------------------------------
@@ -619,9 +674,10 @@ select * from MatHang
 update KhachHang set DiemTichLuyConLai = 30000 where IDKH = 63
 
 delete MatHang where idmh =3
-	delete ChiTietDonDatHang where IDDDH = 31
-	delete DonDatHang where IDDDH = 31
+	delete ChiTietDonDatHang where IDDDH = 72
+	delete DonDatHang where IDDDH = 72
 select * from DonDatHang
+update ChiTietDonDatHang set DanhGiaSanPham = null , BinhLuan = null
 
 select * from LoaiMatHang
 select * from LoaiMatHang where TenLoaiMH = N'Bàn phím'

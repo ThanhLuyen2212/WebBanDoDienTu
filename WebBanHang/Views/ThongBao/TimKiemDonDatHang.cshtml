@@ -70,7 +70,7 @@
                                 <th>Loại mặt hàng</th>
                                 <th>Đơn giá</th>
                                 <th>Số lượng</th>
-
+                                <th></th>
 
                             </tr>
                         </thead>
@@ -84,36 +84,62 @@
                                     <td class="cart__price money">@Html.DisplayFor(Model => items.MatHang.DonGia)  </td>
                                     <td class="cart__product__item__title">@Html.DisplayFor(Model => items.SoluongMH)  </td>
 
-                                </tr>
-                                using (Html.BeginForm("DanhGiaKhachLe", "ThongBao"))
-                                {
-                                    if (item.TrangThai.IDTrangThai == 4 && item.TrangThaiThanhToan == true)
-                                    {
-                                        if (items.BinhLuan == null || items.DanhGiaSanPham == null)
+                                    <td>
+                                        @using (Html.BeginForm("DanhGiaKhachLe", "ThongBao"))
                                         {
-                                            <input type="hidden" name="IDChiTietDonDatHang" value="@items.IDChiTietDDH" />
-                                            <tr>
-                                                <td colspan="6">
-                                                    <div class="rate">
-                                                        <input type="radio" id="star5" name="rate" value="5" />
-                                                        <label for="star5" title="text">5 stars</label>
-                                                        <input type="radio" id="star4" name="rate" value="4" />
-                                                        <label for="star4" title="text">4 stars</label>
-                                                        <input type="radio" id="star3" name="rate" value="3" />
-                                                        <label for="star3" title="text">3 stars</label>
-                                                        <input type="radio" id="star2" name="rate" value="2" />
-                                                        <label for="star2" title="text">2 stars</label>
-                                                        <input type="radio" id="star1" name="rate" value="1" />
-                                                        <label for="star1" title="text">1 star</label>
-                                                    </div>
+                                            if (item.TrangThai.IDTrangThai == 4 && item.TrangThaiThanhToan == true)
+                                            {
+                                                if (items.BinhLuan == null || items.DanhGiaSanPham == null)
+                                                {
 
-                                                    <input class="binhluan" type="text" name="BinhLuan" placeholder="Nhận xét của bạn về sản phẩm" />
-                                                    <input type="submit" name="update" value="Đánh giá sản phẩm" class="site-btn" />
-                                                </td>
-                                            </tr>
+                                                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#DanhGia-@items.IDChiTietDDH-@items.IDMH">Đánh giá mặt hàng</button>
+                                                    <!-- Modal -->
+                                                    <div id="DanhGia-@items.IDChiTietDDH-@items.IDMH" class="modal fade" role="dialog" >
+                                                        <div class="modal-dialog">
+
+                                                            <!-- Modal content-->
+                                                            <div class="modal-content" >
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title">Đánh giá sản phẩm</h4>
+                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                </div>
+                                                                <div class="modal-body">
+
+                                                                    <input type="hidden" name="IDChiTietDonDatHang" value="@items.IDChiTietDDH" />
+                                                                   
+                                                                                <div class="rate">
+                                                                                    <input type="radio" id="star5" name="rate" value="5" />
+                                                                                    <label for="star5" title="text">5 stars</label>
+                                                                                    <input type="radio" id="star4" name="rate" value="4" />
+                                                                                    <label for="star4" title="text">4 stars</label>
+                                                                                    <input type="radio" id="star3" name="rate" value="3" />
+                                                                                    <label for="star3" title="text">3 stars</label>
+                                                                                    <input type="radio" id="star2" name="rate" value="2" />
+                                                                                    <label for="star2" title="text">2 stars</label>
+                                                                                    <input type="radio" id="star1" name="rate" value="1" />
+                                                                                    <label for="star1" title="text">1 star</label>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <input class="binhluan" type="text" name="BinhLuan" placeholder="Nhận xét của bạn về sản phẩm" />
+                                                                                </div>
+                                                                              
+                                                                      
+                                                                </div>
+                                                                <div class="button">
+                                                                    <input type="submit" name="update" value="Đánh giá" class="site-btn" style="text-align:center" />
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
                                         }
-                                    }
-                                }
+                                        </td>
+                                </tr>
                             }
                         </tbody>
                     </table>

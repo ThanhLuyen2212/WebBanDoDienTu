@@ -1,9 +1,8 @@
 ﻿@model IEnumerable<WebBanHang.Areas.Admin.Models.ThongKeTheoKhachHang>
 @{
-    ViewBag.Title = "ThongKeDoanhThuTheoKhachHang";
+    ViewBag.Title = "ThongKeDoanhThuTheoKhachHangLe";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
-
 
 <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
@@ -29,7 +28,7 @@
                     <thead>
                         <tr>
                             <th style="color:white">
-                                Tên khách hàng
+                                Tên khách hàng không có tài khoản
                             </th>
 
                             <th style="color:white">
@@ -65,13 +64,14 @@
 
                             </tr>
                         }
-                        <tr>
-                            <td></td>
-                            <td>Tổng khách hàng: @ViewBag.TongKhachHang</td>
-                            <td>Tổng hàng hóa: @ViewBag.TongHangHoa</td>
-                            <td>Tổng thu nhập nhận: @ViewBag.TongThuNhap</td>
+                    <tr>
 
-                        </tr>
+                        <td>Tổng khách hàng: @ViewBag.TongKhachHang</td>
+                        <td>Tổng hàng hóa: @ViewBag.TongHangHoa</td>
+                        <td></td>
+                        <td class="money">Tổng thu nhập nhận: @ViewBag.TongThuNhap VND</td>
+
+                    </tr>
 
                     </tbody>
                 </table>

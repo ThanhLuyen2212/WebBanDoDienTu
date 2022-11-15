@@ -120,56 +120,27 @@ namespace WebBanHang.Controllers
         {
             try
             {
-                DonDatHang dondathang = new DonDatHang();
-                if (Session["UserName"] == null)
-                {
-                    return RedirectToAction("Index", "Login");
-                }
-                KhachHang khach = (KhachHang)Session["KhachHang"];
-                dondathang.IDKH = khach.IDKH;                
-                data.DonDatHangs.Add(dondathang);
-                data.SaveChanges();
-
                 // Lấy tưng sản phẩm
                 GioHang gio = Session["GioHang"] as GioHang;
-                int tongtien = 0;
+                
                 int _tongHang = 0;
                 foreach (var item in gio.ListHang)
                 {
                     if(item._soLuongHang <= 0)
                     {
-                        data.DonDatHangs.Remove(dondathang);
-                        data.SaveChanges();
-                        return Content("<script language='javascript' type='text/javascript'>alert ('Vui lòng kiểm tra lại thông tin!');</script>");
+                        gio.Remove(item.gioHang.IDMH);                        
                     }
                     _tongHang += item._soLuongHang;
 
                     if (_tongHang == 0)
                     {
-                        data.DonDatHangs.Remove(dondathang);
-                        data.SaveChanges();
-                        return Content("<script language='javascript' type='text/javascript'>alert ('Không có hàng hóa trong giỏ hàng!');</script>");
+                        return RedirectToAction("Index", "Home");
                     }
 
-                    ChiTietDonDatHang detail = new ChiTietDonDatHang();
-                    detail.IDDDH = dondathang.IDDDH;
-                    detail.IDMH = item.gioHang.IDMH;
-                    detail.SoluongMH = item._soLuongHang;
-
-                    tongtien += (int)(item.gioHang.DonGia * item._soLuongHang);
-
-                    data.ChiTietDonDatHangs.Add(detail);
-                    data.SaveChanges();
-                }
-
-                dondathang.TongSoluong = _tongHang;
-                dondathang.TongTien = tongtien;
-                Session["DonDatHang"] = dondathang;
+                }            
                 Session["GioHang"] = gio;
-
-                data.SaveChanges();
-                //gio.clear();
-                return RedirectToAction("XacNhan", "XacNhanDonHang", new { id = dondathang.IDDDH });
+               
+                return RedirectToAction("XacNhan", "XacNhanDonHang");
             }
             catch
             {

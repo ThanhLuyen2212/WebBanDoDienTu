@@ -56,8 +56,6 @@ namespace WebBanHang.Controllers
             return RedirectToAction("CacMatHangDaMua", "ThongBao");            
         }
 
-
-
         public ActionResult CacDonHangDangCho()
         {
             if (Session["KhachHang"] != null)
@@ -113,7 +111,7 @@ namespace WebBanHang.Controllers
         {
             if (SoDienThoai == null)
                 return View();
-            List<DonDatHang> listdondathang = data.DonDatHangs.Where(c => c.DienThoaiKhongAccount == SoDienThoai).ToList();
+            List<DonDatHang> listdondathang = data.DonDatHangs.Where(c => c.DienThoaiKhongAccount == SoDienThoai).ToList();           
             return View(listdondathang);
         }
 
@@ -122,6 +120,11 @@ namespace WebBanHang.Controllers
             string danhgia = form["rate"];
             string IDChiTietDonDatHang = form["IDChiTietDonDatHang"];
             string BinhLuan = form["BinhLuan"];
+            if(danhgia == null || IDChiTietDonDatHang == null || BinhLuan == null)
+            {
+                return Content("<script language='javascript' type='text/javascript'>alert ('Vui đánh giá và bình luận!');</script>");
+            }
+                
             if (BinhLuan == null)
                 BinhLuan = null;
             else BinhLuan = BinhLuan;

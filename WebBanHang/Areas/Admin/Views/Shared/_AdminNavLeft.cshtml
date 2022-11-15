@@ -1,6 +1,11 @@
 ﻿@using WebBanHang.Models;
 @{ 
     Admin admin = (Admin)Session["Admin"];
+    if(admin == null)
+            {
+    <meta http-equiv="refresh" content="3; url = ~/AdminLogin/index" />
+            }
+    
 }
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
@@ -61,7 +66,7 @@
             <span class="nav-link">Chức năng</span>
         </li>
         <li class="nav-item menu-items active">
-            <a class="nav-link" href="~Admin/AdminHome/Index">
+            <a class="nav-link" href="~/Admin/AdminHome/Index">
                 <span class="menu-icon">
                     <i class="mdi mdi-speedometer"></i>
                 </span>
@@ -168,6 +173,7 @@
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" href="~/Admin/AdminThongKe/ThongKeDoanhThu">Doanh thu </a></li>
                     <li class="nav-item"> <a class="nav-link" href="~/Admin/AdminThongKe/ThongKeDoanhThuTheoKhachHang">Theo khách hàng</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="~/Admin/AdminThongKe/ThongKeDoanhThuTheoKhachHangLe">Theo khách hàng lẻ</a></li>
                     <li class="nav-item"> <a class="nav-link" href="~/Admin/AdminThongKe/ThongKeDoanhThuTheoSanPham"> Theo sản phẩm </a></li>
 
                 </ul>

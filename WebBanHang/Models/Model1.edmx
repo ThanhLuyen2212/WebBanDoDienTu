@@ -240,6 +240,14 @@
           <Parameter Name="UserName" Type="nvarchar" Mode="In" />
           <Parameter Name="Password" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="sp_ThongKeDoanhThuTheoKhachHang" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NgayBatDau" Type="date" Mode="In" />
+          <Parameter Name="NgayKetThuc" Type="date" Mode="In" />
+        </Function>
+        <Function Name="sp_ThongKeTheoDoanhThuTheoKhachHangLe" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NgayBatDau" Type="date" Mode="In" />
+          <Parameter Name="NgayKetThuc" Type="date" Mode="In" />
+        </Function>
         <Function Name="sp_ThongKeTheoDoanhThuTheoSanPham" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="NgayBatDau" Type="date" Mode="In" />
           <Parameter Name="NgayKetThuc" Type="date" Mode="In" />
@@ -572,6 +580,28 @@
             <Parameter Name="idkh" Mode="In" Type="Int32" />
             <Parameter Name="DiemThem" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="sp_CapNhatThongTinDonDatHang">
+            <Parameter Name="IDDDH" Mode="In" Type="Int32" />
+            <Parameter Name="ngayMua" Mode="In" Type="DateTime" />
+            <Parameter Name="DiaChiNhanHang" Mode="In" Type="String" />
+            <Parameter Name="TongSoLuong" Mode="In" Type="Int32" />
+            <Parameter Name="TongTien" Mode="In" Type="Int32" />
+            <Parameter Name="IDKH" Mode="In" Type="Int32" />
+            <Parameter Name="TrangThaiThanhToan" Mode="In" Type="Boolean" />
+            <Parameter Name="NgayThanhToan" Mode="In" Type="DateTime" />
+            <Parameter Name="IDPT" Mode="In" Type="Int32" />
+            <Parameter Name="IDTrangThai" Mode="In" Type="Int32" />
+            <Parameter Name="TenKHKhongAccount" Mode="In" Type="String" />
+            <Parameter Name="DienThoaiKhongAcount" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThongKeDoanhThuTheoKhachHang" EntitySet="KhachHangs" ReturnType="Collection(WebBanDoDienTuModel.KhachHang)">
+            <Parameter Name="NgayBatDau" Mode="In" Type="DateTime" />
+            <Parameter Name="NgayKetThuc" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ThongKeTheoDoanhThuTheoKhachHangLe" EntitySet="DonDatHangs" ReturnType="Collection(WebBanDoDienTuModel.DonDatHang)">
+            <Parameter Name="NgayBatDau" Mode="In" Type="DateTime" />
+            <Parameter Name="NgayKetThuc" Mode="In" Type="DateTime" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="MaGiamGia">
           <Key>
@@ -607,6 +637,22 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="sp_ThongKeTheoDoanhThuTheoKhachHangLe_Result">
+          <Property Type="Int32" Name="IDDDH" Nullable="false" />
+          <Property Type="DateTime" Name="NgayMua" Nullable="true" />
+          <Property Type="String" Name="DiaChiNhanHang" Nullable="true" />
+          <Property Type="Int32" Name="TongSoluong" Nullable="true" />
+          <Property Type="Int32" Name="TongTien" Nullable="true" />
+          <Property Type="Int32" Name="IDKH" Nullable="true" />
+          <Property Type="Boolean" Name="TrangThaiThanhToan" Nullable="true" />
+          <Property Type="DateTime" Name="NgayThanhToan" Nullable="true" />
+          <Property Type="Int32" Name="IDPT" Nullable="true" />
+          <Property Type="Int32" Name="IDTrangThai" Nullable="true" />
+          <Property Type="Int32" Name="IDNhanVien" Nullable="true" />
+          <Property Type="String" Name="GhiChu" Nullable="true" />
+          <Property Type="String" Name="TenKHKhongAccount" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="DienThoaiKhongAccount" Nullable="true" MaxLength="20" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -757,6 +803,10 @@
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="sp_GiamDiemKhachHangKhiMuaHangSuDungDiem" FunctionName="WebBanDoDienTuModel.Store.sp_GiamDiemKhachHangKhiMuaHangSuDungDiem" />
           <FunctionImportMapping FunctionImportName="sp_ThemDiemKhachHangKhiMuaHang" FunctionName="WebBanDoDienTuModel.Store.sp_ThemDiemKhachHangKhiMuaHang" />
+          <FunctionImportMapping FunctionImportName="sp_ThongKeDoanhThuTheoKhachHang" FunctionName="WebBanDoDienTuModel.Store.sp_ThongKeDoanhThuTheoKhachHang">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_ThongKeTheoDoanhThuTheoKhachHangLe" FunctionName="WebBanDoDienTuModel.Store.sp_ThongKeTheoDoanhThuTheoKhachHangLe">
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

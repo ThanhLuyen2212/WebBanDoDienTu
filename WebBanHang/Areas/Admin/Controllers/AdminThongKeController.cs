@@ -26,7 +26,7 @@ namespace WebBanHang.Areas.Admin.Controllers
                 return RedirectToAction("Index", "AdminLogin");
             }
 
-            List<KhachHang> khachHangList = data.KhachHangs.ToList();
+            List<KhachHang> khachHangList = data.sp_ThongKeDoanhThuTheoKhachHang(NgayBatDau, NgayKetThuc).ToList();
             List<ThongKeTheoKhachHang> listThongKe = new List<ThongKeTheoKhachHang>();
             int TongKhachhang = 0;
             int TongHangHoa = 0;
@@ -126,5 +126,39 @@ namespace WebBanHang.Areas.Admin.Controllers
 
             return View();
         }
+
+        // thống kê doanh thu theo khách hàng
+        public ActionResult ThongKeDoanhThuTheoKhachHangLe(DateTime? NgayBatDau, DateTime? NgayKetThuc)
+        {
+
+            if (Session["Admin"] == null)
+            {
+                return RedirectToAction("Index", "AdminLogin");
+            }
+
+            List<DonDatHang> DonDatHangList = data.sp_ThongKeTheoDoanhThuTheoKhachHangLe(NgayBatDau, NgayKetThuc).ToList();
+            List<ThongKeTheoKhachHang> listThongKe = new List<ThongKeTheoKhachHang>();
+            int TongKhachhang = 0;
+            int TongHangHoa = 0;
+            int TongThuNhap = 0;
+            foreach (var item in DonDatHangList)
+            {
+                if (data.ChiTietDonDatHangs.Where(c => c.IDDDH == item.IDDDH).Count() == 0) continue;
+                ThongKeTheoKhachHang tk = new ThongKeTheoKhachHang();
+                tk.TenKhachHang = item.TenKHKhongAccount;
+                tk.SoLuongHangHoaDaMua = int.Parse(data.DonDatHangs.Where(c => c.DienThoaiKhongAccount == item.DienThoaiKhongAccount).Sum(c => c.TongSoluong).ToString());
+                tk.SoTienThuVeTuKhachHang = int.Parse(data.DonDatHangs.Where(c => c.DienThoaiKhongAccount == item.DienThoaiKhongAccount).Sum(c => c.TongTien).ToString());
+                tk.DoanhThuChoKhachHang = int.Parse(data.DonDatHangs.Where(c => c.DienThoaiKhongAccount == item.DienThoaiKhongAccount).Sum(c => c.TongTien).ToString());
+                listThongKe.Add(tk);
+                TongKhachhang += 1;
+                TongHangHoa += tk.SoLuongHangHoaDaMua;
+                TongThuNhap += tk.SoTienThuVeTuKhachHang;
+            }
+            ViewBag.TongThuNhap = TongThuNhap;
+            ViewBag.TongHangHoa = TongHangHoa;
+            ViewBag.TongKhachHang = TongKhachhang;
+            return View(listThongKe);
+        }
+
     }
 }

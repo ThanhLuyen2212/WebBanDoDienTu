@@ -62,6 +62,16 @@ namespace WebBanHang.Models
             return listHang.Sum(s => s._soLuongHang);
         }
 
+        public int TongTien()
+        {
+            int tongtien = 0;
+            foreach (Hang item in listHang)
+            {
+                tongtien = tongtien + (int)(item.gioHang.DonGia * item._soLuongHang);
+            }
+            return tongtien;
+        }
+
         public void clear()
         {
             listHang.Clear();

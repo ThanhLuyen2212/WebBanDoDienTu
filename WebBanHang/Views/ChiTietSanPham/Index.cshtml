@@ -1,4 +1,5 @@
-﻿@model WebBanHang.Models.MatHang
+﻿@using WebBanHang.Models
+@model WebBanHang.Models.MatHang
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -13,13 +14,13 @@
             <div class="col-lg-6">
                 <div class="product__details__pic">
                     <div class="product__details__pic__left product__thumb nice-scroll">
-                        <a class="pt active" href="#product-1">                           
+                        <a class="pt active" href="#product-1">
 
                             @{
                                 var base641 = Convert.ToBase64String(Model.HinhAnh1);
                                 var imgSrc1 = String.Format("data:image/gif;base64,{0}", base641);
                             }
-                            <img src='@imgSrc1'  />
+                            <img src='@imgSrc1' />
                         </a>
                         <a class="pt" href="#product-2">
                             @{
@@ -27,9 +28,9 @@
                                 var imgSrc2 = String.Format("data:image/gif;base64,{0}", base642);
                             }
                             <img src='@imgSrc2' />
-                            
+
                         </a>
-                        <a class="pt" href="#product-3">                           
+                        <a class="pt" href="#product-3">
                             @{
                                 var base643 = Convert.ToBase64String(Model.HinhAnh3);
                                 var imgSrc3 = String.Format("data:image/gif;base64,{0}", base643);
@@ -58,7 +59,7 @@
             <div class="col-lg-6">
                 <div class="product__details__text">
                     <h3>@Model.TenMH </h3>
-                  
+
                     <div class="product__details__price money" style="font-size:22px">@Model.DonGia VND </div>
                     <p>
                         @Model.MoTa
@@ -74,20 +75,76 @@
                         }
 
 
-                    </div>                    
+                    </div>
                 </div>
             </div>
+
+
             <div class="col-lg-12">
                 <div class="product__details__tab">
-                    <div style="background-color:black;height:2px; margin-bottom:30px"><p>.</p></div>
-                    <h3 style="text-align: center; font-style: unset; margin-bottom: 30px">Mô tả sản phẩm</h3>
-                   
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Mô tả sản phẩm</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Bình luận</a>
+                        </li>
+
+                    </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
-                            
+                            <h6>Mô tả</h6>
                             <p>
                                 @Model.MoTaChiTiet
-                            </p>                            
+                            </p>
+                        </div>
+                        <div class="tab-pane" id="tabs-2" role="tabpanel">
+                            <h6>Bình luận của khách hàng </h6>
+                            <div class="tab-pane" id="tabs-2" role="tabpanel">
+                                <h6>Specification</h6>
+                                <table>
+
+                                    @foreach (ChiTietDonDatHang item in ViewBag.BinhLuan)
+                                    {
+                                        if (item.BinhLuan != null || item.DanhGiaSanPham != null)
+                                        {
+
+
+                                            if (item.DonDatHang.IDKH == null)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <h5>
+                                                            @item.DonDatHang.TenKHKhongAccount
+                                                        </h5>
+                                                        <h6 style="display:inline-block">@item.DanhGiaSanPham ★</h6>
+                                                        <p>
+                                                            Bình luận: @item.BinhLuan
+                                                        </p>
+                                                    </td>
+                                                </tr>
+
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <h5>
+                                                            @item.DonDatHang.KhachHang.TenKH
+                                                        </h5>
+                                                        <p>
+                                                            @item.BinhLuan
+                                                            <br />
+                                                            @item.DanhGiaSanPham
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -96,3 +153,60 @@
     </div>
 </section>
 <!-- Product Details Section End -->
+
+<!-- Instagram Begin -->
+<div class="instagram">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg" data-setbg="img/instagram/insta-1.jpg">
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="#">#ashion_shop</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg" data-setbg="img/instagram/insta-2.jpg">
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="#">#ashion_shop</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg" data-setbg="img/instagram/insta-3.jpg">
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="#">#ashion_shop</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg" data-setbg="img/instagram/insta-4.jpg">
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="#">#ashion_shop</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg" data-setbg="img/instagram/insta-5.jpg">
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="#">#ashion_shop</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 p-0">
+                <div class="instagram__item set-bg" data-setbg="~/Images/panner.jpg">                    
+                    <div class="instagram__text">
+                        <i class="fa fa-instagram"></i>
+                        <a href="#">#ashion_shop</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Instagram End -->

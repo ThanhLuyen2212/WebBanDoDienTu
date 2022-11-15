@@ -12,10 +12,10 @@ namespace WebBanHang.Controllers
     {
         // GET: XacNhanDonHangKhachLe   
         WebBanDoDienTuEntities data = new WebBanDoDienTuEntities();
-        public ActionResult XacNhan(int? id)
+        public ActionResult XacNhan()
         {
 
-            if (id == null)
+            /*if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -32,7 +32,17 @@ namespace WebBanHang.Controllers
 
             ViewData["IDPT"] = new SelectList(data.PhuongThucThanhToans, "IDPT", "TenPT", donDatHang.IDPT);
 
-            return View(donDatHang);
+            return View(donDatHang);*/
+
+            GioHang gio = (GioHang)Session["GioHang"];
+            if (gio == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            
+            ViewBag.IDPT = new SelectList(data.PhuongThucThanhToans, "IDPT", "TenPT", 1);
+
+            return View();
         }
 
         // POST: XanNhanDonHangKhachLe/5
@@ -40,13 +50,30 @@ namespace WebBanHang.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult XacNhan(DonDatHang donDatHang)
+        public ActionResult XacNhanDonHang()
         {
             try
-            {                
+            {
+                if (Session["GioHang"] == null)
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+
+                DonDatHang donDatHang = new DonDatHang();
+
+                donDatHang.DiaChiNhanHang = Request.Form.Get("DiaChiNhanHang");
+                donDatHang.TenKHKhongAccount = Request.Form.Get("TenKHKhongAccount");
+                donDatHang.DienThoaiKhongAccount = Request.Form.Get("DienThoaiKhongAccount");
+
+                if (donDatHang.TenKHKhongAccount == "" || donDatHang.DienThoaiKhongAccount == "" || donDatHang.DienThoaiKhongAccount == "")
+                {                   
+                    return RedirectToAction("XacNhan", "XacNhanDonHangKhachLe");
+                }
+               
                 var checkbox = Request.Form.Get("TrangThaiThanhToan");
                 if (checkbox != null)
                 {
+                    donDatHang.IDPT = int.Parse(Request.Form.Get("IDPT").ToString());
                     donDatHang.TrangThaiThanhToan = true;
                     donDatHang.NgayThanhToan = DateTime.Now;
                 }
@@ -54,38 +81,56 @@ namespace WebBanHang.Controllers
                 {
                     donDatHang.TrangThaiThanhToan = false;
                     donDatHang.IDPT = 8;
-                }                              
-
-
-                data.Entry(donDatHang).State = System.Data.Entity.EntityState.Modified;
-                DonDatHang donDatHang1 = (DonDatHang)Session["DonDatHang"];
+                }
 
                 donDatHang.IDTrangThai = 1;
-                donDatHang.TongSoluong = donDatHang1.TongSoluong;
-                donDatHang.TongTien = donDatHang1.TongTien;
                 donDatHang.NgayMua = DateTime.Now;
+                data.DonDatHangs.Add(donDatHang);
+                data.SaveChanges();
+
+                int tongtien = 0;
+                int _tongHang = 0;
+                try
+                {
+                    // Lấy tưng sản phẩm
+                    GioHang gio = (GioHang)Session["GioHang"];
+
+                    foreach (var item in gio.ListHang)
+                    {
+                        ChiTietDonDatHang detail = new ChiTietDonDatHang();
+                        detail.IDDDH = donDatHang.IDDDH;
+                        detail.IDMH = item.gioHang.IDMH;
+                        detail.SoluongMH = item._soLuongHang;
+
+                        tongtien += (int)(item.gioHang.DonGia * item._soLuongHang);
+                        _tongHang += item._soLuongHang;
+                        data.ChiTietDonDatHangs.Add(detail);
+                        data.SaveChanges();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    string s = ex.Message;
+                    data.DonDatHangs.Remove(donDatHang);
+                }
+                donDatHang.TongSoluong = _tongHang;
+                donDatHang.TongTien = tongtien;
 
                 data.SaveChanges();
                 Session.Remove("DonDatHang");
                 Session.Remove("GioHang");
                 Session.Remove("SoLuongHangTrongGioHang");
-                return RedirectToAction("MuaThanhCong", "ThongBao");                
+                return RedirectToAction("MuaThanhCong", "ThongBao");
             }
             catch
             {
-                return Content("<script language='javascript' type='text/javascript'>alert ('Vui lòng kiểm tra lại thông tin!');</script>");
+                Session.Remove("DonDatHang");
+                Session.Remove("GioHang");
+                Session.Remove("SoLuongHangTrongGioHang");
+                return Content("<script language='javascript' type='text/javascript'>alert ('Vui lòng đặt hàng lại từ đầu!');</script>");
+
             }
 
-            GioHang gioHang = (GioHang)Session["GioHang"];
-
-            ViewBag.DonDatHang = donDatHang;
-            ViewBag.GioHang = gioHang;
-
-            donDatHang.IDTrangThai = 1;
-                        
-            ViewBag.IDPT = new SelectList(data.PhuongThucThanhToans, "IDPT", "TenPT");            
-
-            return View(donDatHang);
         }
     }
 }

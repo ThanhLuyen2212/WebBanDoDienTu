@@ -2,13 +2,12 @@
 @model WebBanHang.Models.DonDatHang
 @{
     ViewBag.Title = "XacNhan";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    DonDatHang donDatHang = (DonDatHang)Session["DonDatHang"];
+    Layout = "~/Views/Shared/_Layout.cshtml";    
     KhachHang khachHang = (KhachHang)Session["KhachHang"];
     GioHang gioHang = (GioHang)Session["GioHang"];
 }
 
-@using (Html.BeginForm("XacNhan", "XacNhanDonHang"))
+@using (Html.BeginForm("XacNhanDonHang", "XacNhanDonHang"))
 {
     @Html.AntiForgeryToken()
     <!-- Checkout Section Begin -->
@@ -21,31 +20,28 @@
 
                         <div class="row">
                             <div class="col-lg-12">
-                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                @Html.HiddenFor(model => model.IDDDH)
-
+                                
                                 <div style="margin: 10px">
                                     <label>Tên khách hàng:</label>
-                                    <h6 style="display:inline-block;margin-left:40px">@Model.KhachHang.TenKH</h6>
+                                    <h6 style="display:inline-block;margin-left:40px">@khachHang.TenKH</h6>
                                 </div>
                                 <div style="margin: 10px">
                                     <label>Số điện thoại:</label>
-                                    <h6 style="display:inline-block;margin-left:40px">@Model.KhachHang.SDT</h6>
+                                    <h6 style="display:inline-block;margin-left:40px">@khachHang.SDT</h6>
                                 </div>
                                 <div style="margin: 10px">
                                     <label>Email:</label>
-                                    <h6 style="display:inline-block;margin-left:40px">@Model.KhachHang.Email</h6>
+                                    <h6 style="display:inline-block;margin-left:40px">@khachHang.Email</h6>
                                 </div>
                                 <div style="margin: 10px">
                                     <label>Địa chỉ:</label>
-                                    <h6 style="display:inline-block;margin-left:40px">@Model.KhachHang.DiaChiGiaoHang1</h6>
+                                    <h6 style="display:inline-block;margin-left:40px">@khachHang.DiaChiGiaoHang1</h6>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Địa chỉ nhận hàng</label>
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.DiaChiNhanHang, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.DiaChiNhanHang, "", new { @class = "text-danger" })
+                                        <input type="text" name="DiaChiNhanHang"  style="padding:4px 7px 4px 7px" />                                        
                                     </div>
                                 </div>
 
@@ -58,8 +54,7 @@
                                         <div class="form-group">
                                             <label>Chọn phương thức thánh toán</label>
                                             <div class="col-md-10">
-                                                @Html.DropDownList("IDPT", null, htmlAttributes: new { @class = "form-control" })
-                                                @Html.ValidationMessageFor(model => model.IDPT, "", new { @class = "text-danger" })
+                                               @Html.DropDownList("IDPT", (SelectList)ViewBag.IDPT, htmlAttributes: new { @class = "form-control" })                                                
                                             </div>
                                         </div>
                                     </div>
@@ -121,12 +116,12 @@
                                                         document.getElementById("thongbao").innerHTML = "Giá trị nhập vào không hợp lệ";
                                                         return;
                                                     }
-                                                    if (diem > @Model.TongTien - tiengiam2) {
+                                                    if (diem > @gioHang.TongTien() - tiengiam2) {
                                                         document.getElementById("thongbao").innerHTML = "Giá trị nhập vào không hợp lệ";
                                                         return;
                                                     }
                                                     tiengiam1 = diem;
-                                                    var temp1 = @Model.TongTien - tiengiam1 - tiengiam2;
+                                                    var temp1 = @gioHang.TongTien() - tiengiam1 - tiengiam2;
                                                     if (temp1 < 0) {
                                                         document.getElementById("giatien").innerHTML = "0 VND";
                                                     } else {
@@ -154,7 +149,7 @@
                                                     }
                                                     if (check == true) {
                                                         document.getElementById("ketqua").innerHTML = "Mã giảm giá hợp lệ";
-                                                        var temp2 = @Model.TongTien - tiengiam2 - tiengiam1;
+                                                        var temp2 = @gioHang.TongTien() - tiengiam2 - tiengiam1;
                                                         if (temp2 < 0) 
                                                             document.getElementById("giatien").innerHTML = "0 VND";
                                                         else
@@ -195,7 +190,7 @@
                             <div class="checkout__order__total">
                                 <ul>
 
-                                    <li>Tổng giá tiền <span class="money" id="giatien">@Model.TongTien VND </span> </li>
+                                    <li>Tổng giá tiền <span class="money" id="giatien">@gioHang.TongTien() VND </span> </li>
 
                                 </ul>
                             </div>

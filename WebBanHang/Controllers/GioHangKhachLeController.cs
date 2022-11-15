@@ -105,11 +105,11 @@ namespace WebBanHang.Controllers
         [HttpPost]
         public ActionResult MuaHang(FormCollection form)
         {
-            try
+            /*try
             {
-                DonDatHang hoadon = new DonDatHang();
+                DonDatHang donDatHang = new DonDatHang();
                
-                data.DonDatHangs.Add(hoadon);
+                data.DonDatHangs.Add(donDatHang);
                 data.SaveChanges();
 
                 // Lấy tưng sản phẩm
@@ -120,7 +120,7 @@ namespace WebBanHang.Controllers
                 {
                     if (item._soLuongHang <= 0)
                     {
-                        data.DonDatHangs.Remove(hoadon);
+                        data.DonDatHangs.Remove(donDatHang);
                         data.SaveChanges();
                         return Content("<script language='javascript' type='text/javascript'>alert ('Vui lòng kiểm tra lại thông tin!');</script>");
                     }
@@ -128,13 +128,13 @@ namespace WebBanHang.Controllers
 
                     if (_tongHang == 0)
                     {
-                        data.DonDatHangs.Remove(hoadon);
+                        data.DonDatHangs.Remove(donDatHang);
                         data.SaveChanges();
                         return Content("<script language='javascript' type='text/javascript'>alert ('Không có hàng hóa trong giỏ hàng!');</script>");
                     }
 
                     ChiTietDonDatHang detail = new ChiTietDonDatHang();
-                    detail.IDDDH = hoadon.IDDDH;
+                    detail.IDDDH = donDatHang.IDDDH;
                     detail.IDMH = item.gioHang.IDMH;
                     detail.SoluongMH = item._soLuongHang;
 
@@ -144,14 +144,43 @@ namespace WebBanHang.Controllers
                     data.SaveChanges();
                 }
 
-                hoadon.TongSoluong = _tongHang;
-                hoadon.TongTien = tongtien;
-                Session["DonDatHang"] = hoadon;
+                donDatHang.TongSoluong = _tongHang;
+                donDatHang.TongTien = tongtien;
+                Session["DonDatHang"] = donDatHang;
                 Session["GioHang"] = gio;
 
                 data.SaveChanges();
                 //gio.clear();
-                return RedirectToAction("XacNhan", "XacNhanDonHangKhachLe", new { id = hoadon.IDDDH });
+                return RedirectToAction("XacNhan", "XacNhanDonHangKhachLe", new { id = donDatHang.IDDDH });
+            }
+            catch
+            {
+                return Content("Vui lòng kiểm tra lại thông tin!");
+            }*/
+
+            try
+            {
+                // Lấy tưng sản phẩm
+                GioHang gio = Session["GioHang"] as GioHang;
+
+                int _tongHang = 0;
+                foreach (var item in gio.ListHang)
+                {
+                    if (item._soLuongHang <= 0)
+                    {
+                        gio.Remove(item.gioHang.IDMH);
+                    }
+                    _tongHang += item._soLuongHang;
+
+                    if (_tongHang == 0)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+
+                }
+                Session["GioHang"] = gio;
+
+                return RedirectToAction("XacNhan", "XacNhanDonHangKhachLe");
             }
             catch
             {

@@ -13,6 +13,7 @@ namespace WebBanHang.Controllers
         // GET: ChiTietSanPham
         public ActionResult Index(int id)
         {
+            ViewBag.BinhLuan = data.ChiTietDonDatHangs.Where(c => c.IDMH == id).ToList();
             return View(data.MatHangs.FirstOrDefault(c => c.IDMH == id));
 
         }

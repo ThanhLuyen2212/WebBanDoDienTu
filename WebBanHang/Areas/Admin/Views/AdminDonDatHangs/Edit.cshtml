@@ -23,7 +23,7 @@
                         @Html.HiddenFor(model => model.NgayMua)
                         @Html.HiddenFor(model => model.TongSoluong)
                         @Html.HiddenFor(model => model.TongTien)
-                        @Html.HiddenFor(model => model.NgayThanhToan)
+
                         @Html.HiddenFor(model => model.TenKHKhongAccount)
                         @Html.HiddenFor(model => model.DienThoaiKhongAccount)
 
@@ -77,19 +77,23 @@
                         <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Trạng thái thanh toán</label>
                         <div class="col-sm-9">
                             <div class="checkbox">
-                                @Html.EditorFor(model => model.TrangThaiThanhToan)
+                                @Html.EditorFor(model => model.TrangThaiThanhToan, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.TrangThaiThanhToan, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Ngày thanh toán</label>
+                        <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Ngày thanh toán </label>
                         <div class="col-sm-9">
-                            @Html.DisplayFor(model => model.NgayThanhToan)
+                            <div class="checkbox">
+                                @Html.EditorFor(model => model.NgayThanhToan, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.TrangThaiThanhToan, "", new { @class = "text-danger" })
+                            </div>
                         </div>
                     </div>
 
+                   
                     <div class="form-group row">
                         <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Tên khách hàng lẻ</label>
                         <div class="col-sm-9">
