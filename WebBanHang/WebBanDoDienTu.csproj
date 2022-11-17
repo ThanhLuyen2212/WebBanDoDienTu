@@ -211,9 +211,6 @@
     <Compile Include="Models\PhuongThucThanhToan.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sp_ThongKeTheoDoanhThuTheoKhachHangLe_Result.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\TrangThai.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -1354,6 +1351,8 @@
     <Content Include="Areas\Admin\Views\AdminDonDatHangs\PhanCongGiaoHang.cshtml" />
     <Content Include="Areas\Admin\Views\AdminThongKe\ThongKeDoanhThuTheoKhachHangLe.cshtml" />
     <None Include="Properties\PublishProfiles\IISProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\thanhluyen221200-001-site1 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\thanhluyen221200-001-site1 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
